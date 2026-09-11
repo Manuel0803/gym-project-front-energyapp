@@ -29,15 +29,15 @@
 
 ## Descripción
 
-**EnergyAPP Frontend** es la plataforma cliente desarrollada en Next.js para modernizar y centralizar las operaciones diarias de **EnergyClub**[cite: 1, 14]. Proporciona una interfaz ágil tanto para el personal administrativo y propietarios como para los socios, integrando herramientas analíticas y consultas mediante lenguaje natural asistidas por Inteligencia Artificial[cite: 1, 14].
+**EnergyAPP Frontend** es la plataforma cliente desarrollada en Next.js para modernizar y centralizar las operaciones diarias de **EnergyClub**. Proporciona una interfaz ágil tanto para el personal administrativo y propietarios como para los socios, integrando herramientas analíticas y consultas mediante lenguaje natural asistidas por Inteligencia Artificial.
 
 ### Características Principales
-- **Dashboard Analítico & Alertas:** Indicadores en tiempo real sobre ingresos, socios activos, retención y alertas visuales para membresías próximas a vencer[cite: 1, 14].
-- **Gestión Operativa de Socios:** Tablas dinámicas con filtros, paginación, edición rápida, bajas lógicas y consulta integral de legajos[cite: 1, 14].
-- **Control de Planes y Cobranzas:** Asignación de suscripciones, parametrización de aranceles y registro ágil de pagos por múltiples medios (efectivo, transferencia, tarjeta)[cite: 1, 14].
-- **Portal del Socio:** Espacio de autogestión privado donde cada cliente puede revisar su membresía, días restantes, fechas de corte e historial de cuotas pagadas[cite: 1, 14].
-- **Asistente Conversacional (IA):** Interfaz de chat integrada para consultar métricas del gimnasio mediante lenguaje natural con datos en tiempo real[cite: 1, 14].
-- **Seguridad en el Cliente:** Control de acceso basado en roles (RBAC: Administrador, Personal, Socio), rutas protegidas y manejo de tokens JWT[cite: 1, 14].
+- **Dashboard Analítico & Alertas:** Indicadores en tiempo real sobre ingresos, socios activos, retención y alertas visuales para membresías próximas a vencer.
+- **Gestión Operativa de Socios:** Tablas dinámicas con filtros, paginación, edición rápida, bajas lógicas y consulta integral de legajos.
+- **Control de Planes y Cobranzas:** Asignación de suscripciones, parametrización de aranceles y registro ágil de pagos por múltiples medios (efectivo, transferencia, tarjeta).
+- **Portal del Socio:** Espacio de autogestión privado donde cada cliente puede revisar su membresía, días restantes, fechas de corte e historial de cuotas pagadas.
+- **Asistente Conversacional (IA):** Interfaz de chat integrada para consultar métricas del gimnasio mediante lenguaje natural con datos en tiempo real.
+- **Seguridad en el Cliente:** Control de acceso basado en roles (RBAC: Administrador, Personal, Socio), rutas protegidas y manejo de tokens JWT.
 
 ### Stack Tecnológico
 - **Framework:** Next.js (App Router)
@@ -57,7 +57,7 @@ Sigue esta guía paso a paso para configurar y ejecutar el proyecto frontend en 
 Tener instalado el siguiente software:
 - [Node.js](https://nodejs.org/es/) (v18 o superior)
 - [Git](https://git-scm.com/)
-- El backend de EnergyAPP (NestJS) ejecutándose localmente[cite: 1, 14].
+- El backend de EnergyAPP (NestJS) ejecutándose localmente.
 
 ### Instalación
 
