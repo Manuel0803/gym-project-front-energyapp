@@ -1,23 +1,23 @@
 <p align="center">
-  <a href="#" target="blank"><img src="https://res.cloudinary.com/dpxjhrv8s/image/upload/v1781116599/content_nhqpva.webp" width="220" alt="ChacuGym Logo" /></a>
+  <a href="#" target="blank"><img src="https://res.cloudinary.com/dpxjhrv8s/image/upload/v1781116599/content_nhqpva.webp" width="220" alt="EnergyAPP Logo" /></a>
 </p>
 
-<h1 align="center">ChacuGym - Frontend</h1>
+<h1 align="center">EnergyAPP - Frontend</h1>
 
 <p align="center">
-  <strong>El futuro de la gestión de gimnasios.</strong>
+  <strong>Transformación digital y asistencia inteligente para la gestión deportiva.</strong>
   <br />
-  Interfaz de usuario para la administración integral de gimnasios.
+  Interfaz web para la administración integral y autogestión de EnergyClub.
 </p>
 
 <p align="center">
-    <a href="https://nextjs.org/" target="_blank">
+  <a href="https://nextjs.org/" target="_blank">
     <img src="https://img.shields.io/badge/framework-Next.js-black.svg" alt="Framework Next.js">
   </a>
   <a href="https://tailwindcss.com/" target="_blank">
     <img src="https://img.shields.io/badge/styling-Tailwind_CSS-38B2AC.svg" alt="Styling Tailwind CSS">
   </a>
-    <a href="https://tanstack.com/query/latest" target="_blank">
+  <a href="https://tanstack.com/query/latest" target="_blank">
     <img src="https://img.shields.io/badge/data_fetching-TanStack_Query-FF4154.svg" alt="TanStack Query">
   </a>
   <a href="https://zustand.docs.pmnd.rs/" target="_blank">
@@ -29,13 +29,15 @@
 
 ## Descripción
 
-**ChacuGym Frontend** es la aplicación cliente web diseñada para interactuar con la API de ChacuGym.
+**EnergyAPP Frontend** es la plataforma cliente desarrollada en Next.js para modernizar y centralizar las operaciones diarias de **EnergyClub**[cite: 1, 14]. Proporciona una interfaz ágil tanto para el personal administrativo y propietarios como para los socios, integrando herramientas analíticas y consultas mediante lenguaje natural asistidas por Inteligencia Artificial[cite: 1, 14].
 
 ### Características Principales
-- **Dashboard:** Visualización del estado del gimnasio, miembros activos y próximos vencimientos.
-- **Gestión Visual de Socios:** Tablas dinámicas con paginación, filtros y acciones rápidas (dar de baja, editar, ver detalles).
-- **Control de Membresías:** Interfaz para asignar planes, renovar suscripciones y visualizar el progreso de los pagos.
-- **Seguridad en el Cliente:** Rutas protegidas e interceptores de red para el manejo de sesiones con JWT.
+- **Dashboard Analítico & Alertas:** Indicadores en tiempo real sobre ingresos, socios activos, retención y alertas visuales para membresías próximas a vencer[cite: 1, 14].
+- **Gestión Operativa de Socios:** Tablas dinámicas con filtros, paginación, edición rápida, bajas lógicas y consulta integral de legajos[cite: 1, 14].
+- **Control de Planes y Cobranzas:** Asignación de suscripciones, parametrización de aranceles y registro ágil de pagos por múltiples medios (efectivo, transferencia, tarjeta)[cite: 1, 14].
+- **Portal del Socio:** Espacio de autogestión privado donde cada cliente puede revisar su membresía, días restantes, fechas de corte e historial de cuotas pagadas[cite: 1, 14].
+- **Asistente Conversacional (IA):** Interfaz de chat integrada para consultar métricas del gimnasio mediante lenguaje natural con datos en tiempo real[cite: 1, 14].
+- **Seguridad en el Cliente:** Control de acceso basado en roles (RBAC: Administrador, Personal, Socio), rutas protegidas y manejo de tokens JWT[cite: 1, 14].
 
 ### Stack Tecnológico
 - **Framework:** Next.js (App Router)
@@ -45,50 +47,21 @@
 - **Formularios & Validación:** React Hook Form & Zod
 - **Iconos:** Lucide React
 
+---
+
 ## Puesta en Marcha (Modo Desarrollo)
 
-Seguir esta guía paso a paso para configurar y ejecutar el proyecto frontend en el entorno local.
+Sigue esta guía paso a paso para configurar y ejecutar el proyecto frontend en tu entorno local.
 
 ### Prerrequisitos
 Tener instalado el siguiente software:
 - [Node.js](https://nodejs.org/es/) (v18 o superior)
 - [Git](https://git-scm.com/)
-- El backend de ChacuGym (NestJS) ejecutándose localmente.
+- El backend de EnergyAPP (NestJS) ejecutándose localmente[cite: 1, 14].
 
 ### Instalación
 
-1.  **Clonar el repositorio:**
-    ```bash
-    git clone [https://github.com/Manuel0803/gym-project-front.git]
-    cd frontend-chacugym
-    ```
-
-2.  **Configurar las variables de entorno:**
-    Crear un archivo `.env` o `.env.local` en la raíz del proyecto basándose en un el archivo .env de ejemplo.
-    ```bash
-    touch .env
-    ```
-    Abrir el archivo `.env` y configurar la URL base que apuntará a la API de NestJS.
-    ```env
-    # URL del Backend de ChacuGym
-    NEXT_PUBLIC_API_URL="http://localhost:3000"
-    ```
-
-3.  **Instalar las dependencias del proyecto:**
-    ```bash
-    pnpm install
-    ```
-
-4.  **Iniciar el servidor de desarrollo:**
-    ```bash
-    pnpm run dev
-    ```
-
-La aplicación estará corriendo y accesible desde el navegador en **`http://localhost:3000`** (o en el puerto `3001` si el `3000` está siendo ocupado por el backend).
-
-## Scripts Disponibles
-
-- `npm run dev`: Inicia la aplicación en modo de desarrollo con Hot Module Replacement (HMR).
-- `npm run build`: Compila la aplicación y genera una versión optimizada para producción.
-- `npm run start`: Inicia el servidor de Next.js en modo producción (requiere haber ejecutado el build previamente).
-- `npm run lint`: Ejecuta ESLint para buscar y advertir sobre errores en el código según las reglas de calidad configuradas.
+1. **Clonar el repositorio:**
+   ```bash
+   git clone [https://github.com/Manuel0803/gym-project-front.git](https://github.com/Manuel0803/gym-project-front.git)
+   cd frontend-energyapp
