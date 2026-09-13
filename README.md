@@ -1,7 +1,3 @@
-<p align="center">
-  <a href="#" target="blank"><img src="https://res.cloudinary.com/dpxjhrv8s/image/upload/v1781116599/content_nhqpva.webp" width="220" alt="EnergyAPP Logo" /></a>
-</p>
-
 <h1 align="center">EnergyAPP - Frontend</h1>
 
 <p align="center">
