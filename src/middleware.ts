@@ -14,7 +14,13 @@ export function middleware(request: NextRequest) {
 
   let subdomain = '';
   const hostParts = hostname.split('.');
-  if (hostParts.length > 2) {
+  if (
+    hostname.endsWith('.vercel.app') ||
+    hostname.endsWith('.onrender.com') ||
+    hostname.endsWith('.netlify.app')
+  ) {
+    subdomain = '';
+  } else if (hostParts.length > 2) {
     // e.g. "energy.energyapp.com" -> "energy"
     subdomain = hostParts[0];
   } else if (hostParts.length === 2 && hostParts[1] === 'localhost') {

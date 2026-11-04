@@ -14,9 +14,20 @@ export const getSubdomain = (customHostname?: string): string => {
   if (hostname) {
     // Strip port if present
     const cleanHost = hostname.split(':')[0].toLowerCase();
+
+    // Ignore hosting providers and local development
+    if (
+      cleanHost === 'localhost' ||
+      cleanHost.endsWith('.vercel.app') ||
+      cleanHost.endsWith('.onrender.com') ||
+      cleanHost.endsWith('.netlify.app')
+    ) {
+      return '';
+    }
+
     const parts = cleanHost.split('.');
 
-    // Handle "subdomain.energyapp.com", "admin.energyapp.com", "gym.localhost"
+    // Handle "subdomain.energyapp.com", "admin.energyapp.com"
     if (parts.length >= 2 && parts[0] !== 'www' && parts[0] !== 'localhost') {
       return parts[0];
     }
