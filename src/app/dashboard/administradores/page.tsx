@@ -5,7 +5,7 @@ import { AdminTable } from '@/features/administrators/components/AdminTable';
 import { UserPlus } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Administradores | ChacuGym',
+  title: 'Administradores | EnergyAPP',
   description: 'Gestión de usuarios y administradores secundarios del sistema.',
 };
 

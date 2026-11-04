@@ -4,7 +4,7 @@ import { NewPlanForm } from '@/features/plans/components/NewPlanForm';
 import { PlusCircle } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Crear Plan | ChacuGym',
+  title: 'Crear Plan | EnergyAPP',
   description: 'Crea un nuevo plan de membresía y establece su estructura de precios.',
 };
 

@@ -32,7 +32,7 @@ export default function MemberDetailClient({ id }: MemberDetailClientProps) {
     return (
       <div className="flex flex-col items-center justify-center h-64 w-full bg-surface border border-danger-main/20 rounded-lg">
         <p className="text-text-main text-sm">Error al cargar el perfil o el miembro no existe.</p>
-        <Link href="/dashboard/miembros" className="mt-4 text-brand-main hover:underline text-sm">
+        <Link href="/admin/alumnos" className="mt-4 text-brand-main hover:underline text-sm">
           Volver a la lista
         </Link>
       </div>
@@ -102,17 +102,17 @@ export default function MemberDetailClient({ id }: MemberDetailClientProps) {
 
   return (
     <section>
-      <Link href="/dashboard/miembros" className="flex text-text-muted uppercase text-xs font-bold items-center gap-1 mb-4 hover:text-text-main transition-colors w-max">
+      <Link href="/admin/alumnos" className="flex text-text-muted uppercase text-xs font-bold items-center gap-1 mb-4 hover:text-text-main transition-colors w-max">
         <ArrowLeft size={16} aria-hidden="true" />
-        <span>Volver a la lista de miembros</span>
+        <span>Volver a la lista de alumnos</span>
       </Link>
 
       <header className="flex justify-between items-center border-b-2 border-border-primary pb-4 mb-6">
         <div className="flex flex-col gap-2">
           <h1 className="text-3xl text-text-main font-bold">
-            {member.name} {member.surname}
+            {member.user?.name || member.name} {member.user?.surname || member.surname}
           </h1>
-          <p className="text-sm text-text-muted">DNI: {member.dni}</p>
+          <p className="text-sm text-text-muted">DNI: {member.user?.dni || member.dni}</p>
         </div>
       </header>
 

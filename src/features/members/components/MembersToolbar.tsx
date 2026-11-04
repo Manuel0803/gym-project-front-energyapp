@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Filter, ArrowUpDown, ChevronDown } from 'lucide-react';
+import { Filter, ArrowUpDown, ChevronDown, FileSpreadsheet } from 'lucide-react';
 import { Plan } from '@/features/plans/interfaces/plan.interface';
 import { MemberSortBy, SortOrder } from '../interfaces/members.interface';
 
@@ -32,6 +32,7 @@ interface MembersToolbarProps {
   onFilterChange: (
     filter: 'RELEVANT' | 'ACTIVE' | 'INACTIVE' | 'SUSPENDED'
   ) => void;
+  onImportClick?: () => void;
 }
 
 export function MembersToolbar({
@@ -42,6 +43,7 @@ export function MembersToolbar({
   onSortChange,
   filter,
   onFilterChange,
+  onImportClick,
 }: MembersToolbarProps) {
   const [showPlansMenu, setShowPlansMenu] = useState(false);
   const [showSortMenu, setShowSortMenu] = useState(false);
@@ -99,6 +101,22 @@ export function MembersToolbar({
 
   return (
     <div className="flex flex-wrap items-center justify-end gap-3">
+      {onImportClick && (
+        <button
+          type="button"
+          onClick={onImportClick}
+          aria-label="Importar alumnos por archivo Excel o CSV"
+          className="h-9 flex items-center gap-2 bg-surface hover:bg-surface-hover border border-border-primary text-text-main text-xs font-semibold rounded-lg px-3 focus:outline-none focus:border-brand-main transition-colors cursor-pointer shadow-xs"
+        >
+          <FileSpreadsheet
+            size={14}
+            className="text-success-main"
+            aria-hidden="true"
+          />
+          <span>Importar Excel/CSV</span>
+        </button>
+      )}
+
       <div className="relative" ref={plansMenuRef}>
         <button
           type="button"

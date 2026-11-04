@@ -4,7 +4,7 @@ import { EditAdminForm } from '@/features/administrators/components/EditAdminFor
 import { UserCog } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Editar Administrador | ChacuGym',
+  title: 'Editar Administrador | EnergyAPP',
   description: 'Modificar los datos y credenciales de un administrador existente.',
 };
 

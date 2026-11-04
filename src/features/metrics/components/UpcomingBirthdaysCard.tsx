@@ -36,7 +36,7 @@ export function UpcomingBirthdaysCard({ birthdays }: UpcomingBirthdaysCardProps)
             {birthdays.map((birthday, index) => (
               <li key={birthday.id} className="w-full">
                 <Link
-                  href={`/dashboard/miembros/${birthday.id}`}
+                  href={`/admin/alumnos/${birthday.id}`}
                   className={`flex items-center justify-between px-5 py-4 hover:bg-surface-hover transition-colors cursor-pointer w-full focus:outline-none focus-visible:bg-surface-hover focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand-main ${
                     index !== birthdays.length - 1 ? 'border-b border-border-primary' : ''
                   }`}

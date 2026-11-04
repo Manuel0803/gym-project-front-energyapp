@@ -19,12 +19,14 @@ import { InputField } from '@/common/components/ui/InputField';
 import { TextareaField } from '@/common/components/ui/TextareaField';
 import { ImageUpload } from '@/common/components/ui/ImageUpload';
 import { uploadImageToCloudinary } from '@/common/services/cloudinary.service';
-import { Phone, IdCard, Loader2, HeartPulse } from 'lucide-react';
+import { Phone, IdCard, Loader2, HeartPulse, Dumbbell } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { useProfessors } from '@/features/professors/hooks/useProfessors';
 
 export function EditMemberForm({ id }: { id: string }) {
   const router = useRouter();
   const { data: member, isLoading } = useMember(id);
+  const { data: professors = [], isLoading: isLoadingProfessors } = useProfessors();
   const updateMemberMutation = useUpdateMember();
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -44,6 +46,7 @@ export function EditMemberForm({ id }: { id: string }) {
       surname: '',
       phoneNumber: '',
       birthDate: '',
+      professorAssignedUuid: '',
       observations: '',
       emergencyName: '',
       emergencyPhone: '',
@@ -61,6 +64,7 @@ export function EditMemberForm({ id }: { id: string }) {
         birthDate: member.birthDate
           ? new Date(member.birthDate).toISOString().split('T')[0]
           : '',
+        professorAssignedUuid: member.professorAssignedUuid || member.professorAssigned?.uuid || '',
         observations: member.observations || '',
         emergencyName: member.emergencyContact?.name || '',
         emergencyPhone: member.emergencyContact?.phoneNumber || '',
@@ -97,6 +101,7 @@ export function EditMemberForm({ id }: { id: string }) {
         surname: data.surname,
         birthDate: data.birthDate,
         phoneNumber: data.phoneNumber || undefined,
+        professorAssignedUuid: data.professorAssignedUuid?.trim() || null,
         observations: data.observations || undefined,
         profileImageUrl: profileImageUrl as string | undefined | null,
         emergencyContact: hasEmergency
@@ -112,8 +117,9 @@ export function EditMemberForm({ id }: { id: string }) {
         { id, payload },
         {
           onSuccess: () => {
+            toast.success('Datos del socio actualizados exitosamente');
             router.refresh();
-            router.push(`/dashboard/miembros/${id}`);
+            router.push(`/admin/alumnos/${id}`);
           },
         }
       );
@@ -145,7 +151,7 @@ export function EditMemberForm({ id }: { id: string }) {
   return (
     <div className="flex flex-col gap-6">
       <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-6">
-        <div className="border border-border-primary rounded-lg bg-surface flex flex-col p-6 gap-8">
+        <div className="border border-border-primary rounded-lg bg-surface flex flex-col p-6 gap-8 shadow-sm">
           
           <fieldset className="flex flex-col gap-6">
             <legend className="sr-only">Identidad y Contacto</legend>
@@ -209,6 +215,30 @@ export function EditMemberForm({ id }: { id: string }) {
                 icon={<Phone size={14} className="text-text-muted" aria-hidden="true" />}
               />
             </div>
+
+            {/* Asignación Manual de Profesor */}
+            <div className="flex flex-col gap-1.5 pt-2">
+              <label className="text-xs font-bold text-text-muted uppercase tracking-wider flex items-center gap-1.5">
+                <Dumbbell size={14} className="text-brand-main" aria-hidden="true" />
+                <span>Profesor / Entrenador Asignado</span>
+                <span className="text-[10px] text-text-muted font-normal lowercase">(opcional)</span>
+              </label>
+              <select
+                {...register('professorAssignedUuid')}
+                disabled={isSubmitting || isLoadingProfessors}
+                className="w-full bg-background border border-border-primary rounded-lg px-3 py-2 text-xs text-text-main focus:outline-none focus:border-brand-main transition-colors disabled:opacity-50 cursor-pointer"
+              >
+                <option value="">Sin profesor asignado (Opcional)</option>
+                {professors.map((prof) => (
+                  <option key={prof.uuid} value={prof.uuid}>
+                    {prof.name} {prof.surname} ({prof.email})
+                  </option>
+                ))}
+              </select>
+              <p className="text-[11px] text-text-muted">
+                Asigna o reasigna manualmente el profesor para que este alumno aparezca en su lista de entrenamiento.
+              </p>
+            </div>
           </fieldset>
 
           <hr className="border-border-primary" />
@@ -266,7 +296,7 @@ export function EditMemberForm({ id }: { id: string }) {
 
           <div className="flex items-center justify-end gap-3 pt-4 border-t border-border-primary">
             <Link
-              href={`/dashboard/miembros/${id}`}
+              href={`/admin/alumnos/${id}`}
               className="px-6 py-2.5 border border-border-primary bg-transparent text-text-muted hover:text-text-main hover:bg-surface-hover rounded-sm text-sm font-medium transition-colors"
             >
               Cancelar

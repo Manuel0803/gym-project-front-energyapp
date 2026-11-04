@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { ConfigurationTabs } from '@/features/configuration/components/ConfigurationTabs';
 
 export const metadata: Metadata = {
-  title: 'Configuración | ChacuGym',
+  title: 'Configuración | EnergyAPP',
   description: 'Administra las preferencias generales y la seguridad de tu sistema.',
 };
 

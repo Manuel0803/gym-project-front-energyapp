@@ -94,7 +94,7 @@ export function MemberRowActions({ uuid, name }: MemberRowActionsProps) {
           className="bg-surface border border-border-primary rounded-md shadow-xl py-1 overflow-hidden"
         >
           <Link
-            href={`/dashboard/miembros/${uuid}`}
+            href={`/admin/alumnos/${uuid}`}
             role="menuitem"
             className="w-full flex items-center gap-2 px-3 py-2 text-xs font-medium text-text-main hover:bg-surface-hover transition-colors"
             onClick={() => setShowDropdown(false)}
@@ -104,7 +104,7 @@ export function MemberRowActions({ uuid, name }: MemberRowActionsProps) {
           </Link>
           
           <Link
-            href={`/dashboard/miembros/${uuid}/editar`}
+            href={`/admin/alumnos/${uuid}/editar`}
             role="menuitem"
             className="w-full flex items-center gap-2 px-3 py-2 text-xs font-medium text-text-main hover:bg-surface-hover transition-colors"
             onClick={() => setShowDropdown(false)}

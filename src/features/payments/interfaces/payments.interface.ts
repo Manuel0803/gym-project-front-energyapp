@@ -14,6 +14,8 @@ export interface Payment {
   notes?: string;
   isVoided: boolean;
   memberUuid: string;
+  type?: 'MEMBERSHIP' | 'PRODUCTS' | string;
+  saleUuid?: string;
 }
 
 export interface CreatePaymentPayload {

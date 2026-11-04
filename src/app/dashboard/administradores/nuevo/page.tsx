@@ -4,7 +4,7 @@ import { NewAdminForm } from '@/features/administrators/components/NewAdminForm'
 import { UserPlus } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Nuevo Administrador | ChacuGym',
+  title: 'Nuevo Administrador | EnergyAPP',
   description: 'Crear una nueva cuenta de administrador para el sistema.',
 };
 

@@ -4,7 +4,7 @@ import { EditPlanForm } from '@/features/plans/components/EditPlanForm';
 import { Settings2 } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Editar Plan | ChacuGym',
+  title: 'Editar Plan | EnergyAPP',
   description: 'Modifica las especificaciones, beneficios y el precio de un plan existente.',
 };
 

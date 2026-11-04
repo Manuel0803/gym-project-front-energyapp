@@ -19,9 +19,10 @@ import {
   LogOut,
   Menu,
   X,
+  ShoppingCart,
+  Package,
 } from 'lucide-react';
 import { SidebarNav, NavItem } from './SidebarNav';
-import { SidebarNews } from './SidebarNews';
 
 export function DashboardShell({
   children,
@@ -52,7 +53,9 @@ export function DashboardShell({
       icon: LayoutDashboard,
       exact: true,
     },
-    { name: 'Miembros', href: '/dashboard/miembros', icon: Users },
+    { name: 'Alumnos', href: '/admin/alumnos', icon: Users },
+    { name: 'Punto de Venta', href: '/admin/pos', icon: ShoppingCart },
+    { name: 'Inventario', href: '/admin/inventario', icon: Package },
     {
       name: 'Administradores',
       href: '/dashboard/administradores',
@@ -105,11 +108,7 @@ export function DashboardShell({
           </div>
 
           <div className="flex flex-col mt-auto mb-6 space-y-1">
-            <SidebarNews 
-              version="v1.8.2" 
-              message="Nuevo botón de renovación de membresía en la sección de Miembros. Ahora puedes renovar membresías de manera más rápida y sencilla. Correcciones menores" 
-            />
-
+            
             <button
               onClick={() => setIsLogoutModalOpen(true)}
               className="flex items-center gap-4 px-8 py-3 transition-colors border-l-2 border-transparent text-text-muted hover:bg-danger-surface hover:text-danger-main hover:border-danger-main cursor-pointer w-full text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-danger-main"

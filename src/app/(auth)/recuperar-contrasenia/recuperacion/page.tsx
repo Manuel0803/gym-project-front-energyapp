@@ -4,7 +4,7 @@ import { ResetPasswordForm } from '@/features/auth/components/ResetPasswordForm'
 import { Dumbbell } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Crear Nueva Contraseña | ChacuGym',
+  title: 'Crear Nueva Contraseña | EnergyAPP',
   description: 'Establece una nueva contraseña segura para tu cuenta.',
 };
 
@@ -16,7 +16,7 @@ export default function ResetPasswordPage() {
           <Dumbbell aria-hidden="true" className="text-brand-main" size={24} />
         </div>
         <h1 className="text-xl font-bold text-text-main transition-colors">
-          ChacuGym
+          EnergyAPP
         </h1>
         <p className="text-sm text-text-muted mt-1 transition-colors text-center">
           Crear Nueva Contraseña

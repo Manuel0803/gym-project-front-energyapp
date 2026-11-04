@@ -5,8 +5,11 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Search, X } from 'lucide-react';
 
 const SEARCH_CONFIG: Record<string, { placeholder: string }> = {
+  '/admin/alumnos': {
+    placeholder: 'Buscar alumnos...',
+  },
   '/dashboard/miembros': {
-    placeholder: 'Buscar miembros...',
+    placeholder: 'Buscar alumnos...',
   },
   '/dashboard/administradores': {
     placeholder: 'Buscar administradores, rol o estado...',

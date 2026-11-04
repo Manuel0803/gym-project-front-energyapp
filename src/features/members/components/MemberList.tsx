@@ -33,11 +33,11 @@ export function MemberList({
   const displayStatus = statusTranslations[status] || status;
 
   const handleRowClick = () => {
-    router.push(`/dashboard/miembros/${uuid}`);
+    router.push(`/admin/alumnos/${uuid}`);
   };
 
   const handleMouseEnter = () => {
-    router.prefetch(`/dashboard/miembros/${uuid}`);
+    router.prefetch(`/admin/alumnos/${uuid}`);
   };
 
   const initials = name

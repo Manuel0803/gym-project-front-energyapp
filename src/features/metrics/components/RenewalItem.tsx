@@ -24,7 +24,7 @@ export function RenewalItem({
 
   return (
     <Link
-      href={`/dashboard/miembros/${id}`}
+      href={`/admin/alumnos/${id}`}
       className={`flex items-center justify-between px-5 py-4 hover:bg-surface-hover transition-colors cursor-pointer w-full focus:outline-none focus-visible:bg-surface-hover focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand-main ${borderClass}`}
       aria-label={`Ver perfil de ${name}. ${isUrgent ? 'Vencimiento urgente:' : 'Vence en:'} ${daysText}`}
       title={`Ver perfil de ${name}`}

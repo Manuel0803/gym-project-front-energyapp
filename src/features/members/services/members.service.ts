@@ -3,6 +3,7 @@ import { PaginatedResult } from '@/common/interfaces/pagination.interface';
 import {
   CreateMemberPayload,
   GetMembersParams,
+  ImportMembersResponse,
   Member,
   UpdateMemberPayload,
 } from '../interfaces/members.interface';
@@ -131,6 +132,27 @@ export class MembersService {
     return await httpClient.post<Member>(
       `${this.ENDPOINT}/${id}/change-plan`,
       payload
+    );
+  }
+
+  /**
+   * Imports members in bulk from a CSV file.
+   *
+   * @param file - The uploaded CSV file containing member rows.
+   * @returns A promise resolving to the import outcome report.
+   */
+  static async importCsv(file: File): Promise<ImportMembersResponse> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return await httpClient.post<ImportMembersResponse>(
+      `${this.ENDPOINT}/import`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
     );
   }
 }

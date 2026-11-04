@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 import { useMembers } from '../hooks/useMembers';
@@ -9,6 +9,7 @@ import { MemberList } from './MemberList';
 import { MembersToolbar, SortOption } from './MembersToolbar';
 import { MembersTableHeader } from './MembersTableHeader';
 import { MembersPagination } from './MembersPagination';
+import { ImportMembersModal } from './ImportMembersModal';
 import { TableSkeleton } from '@/common/components/ui/skeletons/TableSkeleton';
 import { MemberSortBy, SortOrder } from '../interfaces/members.interface';
 
@@ -24,6 +25,8 @@ export function MembersDirectory() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+
+  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
 
   const filter = (searchParams.get('filter') as 'RELEVANT' | 'ACTIVE' | 'INACTIVE' | 'SUSPENDED') || 'RELEVANT';
   const currentPage = Number(searchParams.get('page')) || 1;
@@ -131,6 +134,7 @@ export function MembersDirectory() {
         onSortChange={handleSortChange}
         filter={filter}
         onFilterChange={handleFilterChange}
+        onImportClick={() => setIsImportModalOpen(true)}
       />
 
       <div className="bg-surface border border-border-primary rounded-lg flex flex-col overflow-hidden shadow-sm">
@@ -174,11 +178,17 @@ export function MembersDirectory() {
                     dynamicState = 'SUSPENDED';
                   }
 
+                  // V2 payload compatibility: member.user contains personal info
+                  const memberName = member.user?.name || member.name || '';
+                  const memberSurname = member.user?.surname || member.surname || '';
+                  const fullName = `${memberName} ${memberSurname}`.trim() || 'Sin nombre';
+                  const memberDni = member.user?.dni || member.dni || '';
+
                   return (
                     <MemberList
                       key={member.uuid}
-                      name={`${member.name} ${member.surname}`}
-                      memberID={member.dni}
+                      name={fullName}
+                      memberID={memberDni}
                       uuid={member.uuid}
                       status={dynamicState}
                       profileImageUrl={member.profileImageUrl}
@@ -210,6 +220,11 @@ export function MembersDirectory() {
           }
         />
       </div>
+
+      <ImportMembersModal
+        isOpen={isImportModalOpen}
+        onClose={() => setIsImportModalOpen(false)}
+      />
     </section>
   );
 }

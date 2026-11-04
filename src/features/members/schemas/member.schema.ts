@@ -31,6 +31,7 @@ export const memberSchema = z
       .regex(/^\+?[0-9]{10,15}$/, 'El teléfono debe tener entre 10 y 15 dígitos')
       .optional()
       .or(z.literal('')),
+    professorAssignedUuid: z.string().optional().or(z.literal('')),
     observations: z
       .string()
       .max(500, 'Las observaciones no pueden superar los 500 caracteres')

@@ -4,8 +4,8 @@ import { ForgotPasswordForm } from '@/features/auth/components/ForgotPasswordFor
 import { Dumbbell, ArrowLeft } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Recuperar Contraseña | ChacuGym',
-  description: 'Solicita un enlace de recuperación para tu cuenta de ChacuGym.',
+  title: 'Recuperar Contraseña | EnergyAPP',
+  description: 'Solicita un enlace de recuperación para tu cuenta de EnergyAPP.',
 };
 
 export default function ForgotPasswordPage() {
@@ -16,7 +16,7 @@ export default function ForgotPasswordPage() {
           <Dumbbell aria-hidden="true" className="text-brand-main" size={24} />
         </div>
         <h1 className="text-xl font-bold text-text-main transition-colors">
-          ChacuGym
+          EnergyAPP
         </h1>
         <p className="text-sm text-text-muted mt-1 transition-colors text-center">
           Recuperación de Contraseña

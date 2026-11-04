@@ -3,7 +3,7 @@ import { CreatePlanButton } from '@/features/plans/components/CreatePlanButton';
 import { PlansGrid } from '@/features/plans/components/PlansGrid';
 
 export const metadata: Metadata = {
-  title: 'Planes | ChacuGym',
+  title: 'Planes | EnergyAPP',
   description: 'Gestione los planes de membresía y la estructura de precios del gimnasio.',
 };
 

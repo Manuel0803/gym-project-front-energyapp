@@ -103,7 +103,7 @@ export function ForgotPasswordForm() {
           </button>
 
           <p className="text-xs text-text-main mb-4 transition-colors text-center">
-            Si no recuerdas tu correo electrónico, contacta con un administrador de ChacuGym.
+            Si no recuerdas tu correo electrónico, contacta con un administrador de EnergyAPP.
           </p>
         </form>
       ) : (

@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { MapPinOff } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Página no encontrada | ChacuGym',
+  title: 'Página no encontrada | EnergyAPP',
   description: 'La ruta que intentas buscar no existe o ha sido movida.',
 };
 

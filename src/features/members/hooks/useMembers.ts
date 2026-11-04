@@ -160,3 +160,24 @@ export const useChangePlan = () => {
     },
   });
 };
+
+export const useImportMembers = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (file: File) => MembersService.importCsv(file),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['members'] });
+    },
+    onError: (error: unknown) => {
+      const apiError = error as ApiError;
+      const message = apiError.response?.data?.message;
+
+      toast.error(
+        Array.isArray(message)
+          ? message[0]
+          : message || 'Error al procesar la importación masiva'
+      );
+    },
+  });
+};
