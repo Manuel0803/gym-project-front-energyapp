@@ -3,14 +3,18 @@
 import { useRouter } from 'next/navigation';
 import { useCreateUser } from '../hooks/useUsers';
 import { AdminForm } from './AdminForm';
+import { UserFormValues } from '@/features/administrators/schemas/user.schema';
 
 export function NewAdminForm() {
   const router = useRouter();
-  const { mutate, isPending } = useCreateUser();
+  const { mutate: createUser, isPending } = useCreateUser();
 
-  const handleSubmit = (data: any) => {
-    mutate(data, {
+  const handleSubmit = (data: UserFormValues) => {
+    createUser(data, {
       onSuccess: () => router.push('/dashboard/administradores'),
+      onError: (error: unknown) => {
+        console.error('[NewAdminForm] Failed to create new admin:', error);
+      }
     });
   };
 

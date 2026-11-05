@@ -1,4 +1,9 @@
-import axios, { AxiosInstance, AxiosError, InternalAxiosRequestConfig } from 'axios';
+import axios, { 
+  AxiosInstance, 
+  AxiosError, 
+  InternalAxiosRequestConfig, 
+  AxiosRequestConfig 
+} from 'axios';
 import { HttpAdapter } from './http.adapter';
 import { useAuthStore } from '@/features/auth/store/auth.store'; 
 
@@ -7,7 +12,7 @@ export class AxiosAdapter implements HttpAdapter {
   private isRefreshing = false;
   private failedQueue: {
     resolve: (value?: unknown) => void;
-    reject: (reason?: any) => void;
+    reject: (reason?: unknown) => void;
   }[] = [];
 
   constructor() {
@@ -26,7 +31,7 @@ export class AxiosAdapter implements HttpAdapter {
         }
         return config;
       },
-      (error) => Promise.reject(error)
+      (error: unknown) => Promise.reject(error)
     );
 
     this.axiosInstance.interceptors.response.use(
@@ -66,7 +71,6 @@ export class AxiosAdapter implements HttpAdapter {
             const { access_token, refresh_token } = response.data;
 
             setTokens(access_token, refresh_token);
-
             this.processQueue(null, access_token);
 
             originalRequest.headers.Authorization = `Bearer ${access_token}`;
@@ -86,7 +90,7 @@ export class AxiosAdapter implements HttpAdapter {
     );
   }
 
-  private processQueue(error: any, token: string | null = null) {
+  private processQueue(error: unknown, token: string | null = null) {
     this.failedQueue.forEach((prom) => {
       if (error) {
         prom.reject(error);
@@ -104,27 +108,27 @@ export class AxiosAdapter implements HttpAdapter {
     }
   }
 
-  async get<T>(url: string, config?: any): Promise<T> {
+  async get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
     const response = await this.axiosInstance.get<T>(url, config);
     return response.data;
   }
 
-  async post<T>(url: string, data?: any, config?: any): Promise<T> {
+  async post<T>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> {
     const response = await this.axiosInstance.post<T>(url, data, config);
     return response.data;
   }
 
-  async put<T>(url: string, data?: any, config?: any): Promise<T> {
+  async put<T>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> {
     const response = await this.axiosInstance.put<T>(url, data, config);
     return response.data;
   }
 
-  async patch<T>(url: string, data?: any, config?: any): Promise<T> {
+  async patch<T>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> {
     const response = await this.axiosInstance.patch<T>(url, data, config);
     return response.data;
   }
 
-  async delete<T>(url: string, config?: any): Promise<T> {
+  async delete<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
     const response = await this.axiosInstance.delete<T>(url, config);
     return response.data;
   }

@@ -10,6 +10,7 @@ import {
   SecurityFormValues,
 } from '@/features/configuration/schemas/config.schema';
 import { InputField } from '@/common/components/ui/InputField';
+import { ApiError } from '@/common/interfaces/api-error.interface';
 import { Save, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
@@ -19,7 +20,6 @@ export function SecurityTab() {
   const [showConfirmPass, setShowConfirmPass] = useState(false);
 
   const userId = useAuthStore((state) => state.user?.uuid);
-
   const { mutate: changePassword, isPending } = useChangePassword();
 
   const {
@@ -51,11 +51,13 @@ export function SecurityTab() {
           toast.success('Contraseña actualizada con éxito');
           reset();
         },
-        onError: (error: any) => {
-          const errorMessage =
-            error.response?.data?.message ||
-            'Ocurrió un error al actualizar la contraseña';
-          toast.error(errorMessage);
+        onError: (error: unknown) => {
+          const apiError = error as ApiError;
+          console.error('[SecurityTab] Failed to update password:', apiError);
+          const message = apiError.response?.data?.message;
+          toast.error(
+            Array.isArray(message) ? message[0] : (message || 'Ocurrió un error al actualizar la contraseña')
+          );
         },
       }
     );
@@ -63,12 +65,12 @@ export function SecurityTab() {
 
   return (
     <div className="p-6 md:p-8 flex flex-col gap-8 animate-in fade-in duration-300">
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <h2 className="text-lg font-bold text-text-main mb-1">
           Seguridad de la Cuenta
         </h2>
         <p className="text-sm text-text-muted mb-6">
-          Gestiona tus credenciales y métodos de Autenticación.
+          Gestiona tus credenciales y métodos de autenticación.
         </p>
 
         <div className="max-w-md flex flex-col gap-5">
@@ -84,9 +86,10 @@ export function SecurityTab() {
                 type="button"
                 disabled={isPending}
                 onClick={() => setShowCurrentPass(!showCurrentPass)}
-                className="text-text-muted hover:text-text-main disabled:opacity-50"
+                aria-label={showCurrentPass ? 'Ocultar contraseña actual' : 'Mostrar contraseña actual'}
+                className="text-text-muted hover:text-text-main disabled:opacity-50 cursor-pointer"
               >
-                {showCurrentPass ? <EyeOff size={16} /> : <Eye size={16} />}
+                {showCurrentPass ? <EyeOff size={16} aria-hidden="true" /> : <Eye size={16} aria-hidden="true" />}
               </button>
             }
           />
@@ -103,9 +106,10 @@ export function SecurityTab() {
                 type="button"
                 disabled={isPending}
                 onClick={() => setShowNewPass(!showNewPass)}
-                className="text-text-muted hover:text-text-main disabled:opacity-50"
+                aria-label={showNewPass ? 'Ocultar nueva contraseña' : 'Mostrar nueva contraseña'}
+                className="text-text-muted hover:text-text-main disabled:opacity-50 cursor-pointer"
               >
-                {showNewPass ? <EyeOff size={16} /> : <Eye size={16} />}
+                {showNewPass ? <EyeOff size={16} aria-hidden="true" /> : <Eye size={16} aria-hidden="true" />}
               </button>
             }
           />
@@ -122,9 +126,10 @@ export function SecurityTab() {
                 type="button"
                 disabled={isPending}
                 onClick={() => setShowConfirmPass(!showConfirmPass)}
-                className="text-text-muted hover:text-text-main disabled:opacity-50"
+                aria-label={showConfirmPass ? 'Ocultar confirmación' : 'Mostrar confirmación'}
+                className="text-text-muted hover:text-text-main disabled:opacity-50 cursor-pointer"
               >
-                {showConfirmPass ? <EyeOff size={16} /> : <Eye size={16} />}
+                {showConfirmPass ? <EyeOff size={16} aria-hidden="true" /> : <Eye size={16} aria-hidden="true" />}
               </button>
             }
           />
@@ -132,12 +137,12 @@ export function SecurityTab() {
           <button
             type="submit"
             disabled={isPending}
-            className="w-fit flex items-center justify-center gap-2 px-6 py-2.5 mt-2 bg-brand-main hover:bg-brand-hover text-white rounded-sm font-medium text-sm transition-colors  disabled:opacity-50 cursor-pointer"
+            className="w-fit flex items-center justify-center gap-2 px-6 py-2.5 mt-2 bg-brand-main hover:bg-brand-hover text-white rounded-sm font-medium text-sm transition-colors disabled:opacity-50 cursor-pointer shadow-sm"
           >
             {isPending ? (
-              <Loader2 size={16} className="animate-spin" />
+              <Loader2 size={16} className="animate-spin" aria-hidden="true" />
             ) : (
-              <Save size={16} />
+              <Save size={16} aria-hidden="true" />
             )}
             <span>
               {isPending ? 'Actualizando...' : 'Actualizar Contraseña'}
@@ -158,7 +163,7 @@ export function SecurityTab() {
               Añade una capa extra de seguridad a tu cuenta.
             </p>
           </div>
-          <button className="px-6 py-2.5 bg-brand-main/10 text-brand-main hover:bg-brand-main/20 rounded-sm text-sm font-medium transition-colors ">
+          <button className="px-6 py-2.5 bg-brand-main/10 text-brand-main hover:bg-brand-main/20 rounded-sm text-sm font-medium transition-colors">
             Próximamente
           </button>
         </div>

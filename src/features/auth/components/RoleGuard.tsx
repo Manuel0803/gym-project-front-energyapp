@@ -3,8 +3,12 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useRole } from '../hooks/useRole';
-import { RoleGuardProps } from '../interfaces/role-guard.interface';
 import { Loader2 } from 'lucide-react';
+
+export interface RoleGuardProps {
+  allowedRoles: string[];
+  children: React.ReactNode;
+}
 
 export function RoleGuard({ allowedRoles, children }: RoleGuardProps) {
   const { role } = useRole();
@@ -18,9 +22,18 @@ export function RoleGuard({ allowedRoles, children }: RoleGuardProps) {
 
   if (!allowedRoles.includes(role)) {
     return (
-      <div className="h-64 flex flex-col items-center justify-center">
-        <Loader2 className="animate-spin text-brand-main mb-4" />
-        <p>Verificando información...</p>
+      <div 
+        className="h-64 flex flex-col items-center justify-center"
+        role="status"
+        aria-live="polite"
+      >
+        <Loader2 
+          className="w-8 h-8 animate-spin text-brand-main mb-4" 
+          aria-hidden="true" 
+        />
+        <p className="text-text-muted text-sm font-medium animate-pulse">
+          Verificando permisos...
+        </p>
       </div>
     );
   }

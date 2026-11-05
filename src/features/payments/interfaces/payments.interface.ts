@@ -14,22 +14,19 @@ export interface Payment {
   notes?: string;
   isVoided: boolean;
   memberUuid: string;
+  type?: 'MEMBERSHIP' | 'PRODUCTS' | string;
+  saleUuid?: string;
 }
 
 export interface CreatePaymentPayload {
   paymentMethod: PaymentMethod;
   amountPaid: number;
-  notes?: string;
   memberUuid: string;
+  notes?: string;
   date?: string;
 }
 
-export interface UpdatePaymentPayload {
-  paymentMethod?: PaymentMethod;
-  amountPaid?: number;
-  notes?: string;
-  date?: string;
-}
+export type UpdatePaymentPayload = Partial<Omit<CreatePaymentPayload, 'memberUuid'>>;
 
 export interface PaymentFormProps {
   memberName: string;

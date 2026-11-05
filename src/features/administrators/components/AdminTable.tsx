@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useAuthStore } from '@/features/auth/store/auth.store';
 import { useUsers } from '../hooks/useUsers';
@@ -8,20 +8,27 @@ import { AdminRow } from './AdminRow';
 import { TableSkeleton } from '@/common/components/ui/skeletons/TableSkeleton';
 import { ChevronRight, ChevronLeft, Loader2, AlertCircle } from 'lucide-react';
 
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 10;
 
 export function AdminTable() {
   const searchParams = useSearchParams();
   const q = searchParams.get('q') || undefined;
-  
+
   const [currentPage, setCurrentPage] = useState(1);
+  const [prevQuery, setPrevQuery] = useState(q);
+
   const currentUserUuid = useAuthStore((state) => state.user?.uuid);
 
-  useEffect(() => {
+  if (q !== prevQuery) {
+    setPrevQuery(q);
     setCurrentPage(1);
-  }, [q]);
+  }
 
-  const { data, isLoading, isError, isFetching } = useUsers(currentPage, ITEMS_PER_PAGE, q);
+  const { data, isLoading, isError, isFetching } = useUsers(
+    currentPage,
+    ITEMS_PER_PAGE,
+    q
+  );
 
   if (isLoading && currentPage === 1) return <TableSkeleton />;
 
@@ -38,9 +45,16 @@ export function AdminTable() {
   const meta = data?.meta;
   const totalPages = meta?.lastPage || 1;
 
+  const handlePrevPage = () => {
+    setCurrentPage((p) => Math.max(1, p - 1));
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((p) => Math.min(totalPages, p + 1));
+  };
+
   return (
     <div className="bg-surface border border-border-primary rounded-lg flex flex-col overflow-hidden relative">
-      
       {isFetching && currentPage > 1 && (
         <div className="absolute inset-0 bg-surface/50 flex flex-col items-center justify-center z-10 backdrop-blur-[1px]">
           <Loader2 className="w-6 h-6 text-brand-main animate-spin" />
@@ -81,14 +95,14 @@ export function AdminTable() {
           </p>
           <div className="flex items-center gap-2">
             <button
-              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+              onClick={handlePrevPage}
               disabled={currentPage === 1 || isFetching}
               className="p-1 text-text-muted hover:text-text-main disabled:opacity-50 disabled:hover:text-text-muted transition-colors cursor-pointer disabled:cursor-not-allowed"
             >
               <ChevronLeft size={18} />
             </button>
             <button
-              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+              onClick={handleNextPage}
               disabled={currentPage >= totalPages || isFetching}
               className="p-1 text-text-muted hover:text-text-main disabled:opacity-50 disabled:hover:text-text-muted transition-colors cursor-pointer disabled:cursor-not-allowed"
             >

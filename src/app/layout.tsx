@@ -15,15 +15,15 @@ export const metadata: Metadata = {
     process.env.NEXT_PUBLIC_APP_URL || 'https://gymsystem-pro.vercel.app'
   ),
   title: {
-    template: '%s | ChacuGym',
-    default: 'ChacuGym - Terminal de Administradores',
+    template: '%s | EnergyAPP',
+    default: 'EnergyAPP - Terminal de Administradores',
   },
   description:
     'Terminal de gestión y administración para centros de entrenamiento.',
   openGraph: {
-    title: 'ChacuGym - Terminal de Administradores',
+    title: 'EnergyAPP - Terminal de Administradores',
     description: 'Plataforma integral de gestión para tu gimnasio.',
-    siteName: 'ChacuGym',
+    siteName: 'EnergyAPP',
     locale: 'es_AR',
     type: 'website',
   },

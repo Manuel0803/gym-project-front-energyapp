@@ -5,7 +5,7 @@ export const configGeneralSchema = z.object({
     .string()
     .trim()
     .min(2, 'El nombre debe tener al menos 2 caracteres')
-    .max(100, 'Nombre demasiado largo'),
+    .max(100, 'El nombre es demasiado largo'),
   phoneNumber: z
     .string()
     .trim()
@@ -16,7 +16,7 @@ export const configGeneralSchema = z.object({
     .string()
     .trim()
     .min(5, 'La dirección es muy corta')
-    .max(150, 'Dirección demasiado larga'),
+    .max(150, 'La dirección es demasiado larga'),
 });
 
 export const configSecuritySchema = z
@@ -38,5 +38,4 @@ export const configSecuritySchema = z
   });
 
 export type GeneralFormValues = z.infer<typeof configGeneralSchema>;
-
 export type SecurityFormValues = z.infer<typeof configSecuritySchema>;

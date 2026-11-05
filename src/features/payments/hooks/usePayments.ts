@@ -1,17 +1,20 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { PaymentsService } from '../services/payments.service';
 import {
   CreatePaymentPayload,
   UpdatePaymentPayload,
 } from '../interfaces/payments.interface';
+import { ApiError } from '@/common/interfaces/api-error.interface';
 import toast from 'react-hot-toast';
-import { AxiosError } from 'axios';
 
-import { useQuery } from '@tanstack/react-query';
-
-export const usePayments = (page: number, limit: number, memberUuid?: string, status?: string) => {
+export const usePayments = (
+  page: number = 1,
+  limit: number = 10,
+  memberUuid?: string,
+  status?: string
+) => {
   return useQuery({
-    queryKey: ['payments', page, limit, memberUuid, status],
+    queryKey: ['payments', { page, limit, memberUuid, status }],
     queryFn: () => PaymentsService.getAll(page, limit, memberUuid, status),
   });
 };
@@ -29,15 +32,15 @@ export const useCreatePayment = () => {
       });
       toast.success('Pago registrado con éxito');
     },
-    onError: (error: AxiosError<any>) => {
-      const message =
-        error.response?.data?.message ||
-        'Ocurrió un error al registrar el pago';
-      if (Array.isArray(message)) {
-        message.forEach((msg: string) => toast.error(msg));
-      } else {
-        toast.error(message);
-      }
+    onError: (error: unknown) => {
+      const apiError = error as ApiError;
+      const message = apiError.response?.data?.message;
+      
+      toast.error(
+        Array.isArray(message)
+          ? message[0]
+          : (message || 'Ocurrió un error al registrar el pago')
+      );
     },
   });
 };
@@ -58,15 +61,15 @@ export const useUpdatePayment = () => {
       queryClient.invalidateQueries({ queryKey: ['member'] });
       toast.success('Pago actualizado con éxito');
     },
-    onError: (error: AxiosError<any>) => {
-      const message =
-        error.response?.data?.message ||
-        'Ocurrió un error al actualizar el pago';
-      if (Array.isArray(message)) {
-        message.forEach((msg: string) => toast.error(msg));
-      } else {
-        toast.error(message);
-      }
+    onError: (error: unknown) => {
+      const apiError = error as ApiError;
+      const message = apiError.response?.data?.message;
+      
+      toast.error(
+        Array.isArray(message)
+          ? message[0]
+          : (message || 'Ocurrió un error al actualizar el pago')
+      );
     },
   });
 };
@@ -81,9 +84,15 @@ export const useDeletePayment = () => {
       queryClient.invalidateQueries({ queryKey: ['member'] });
       toast.success('Pago anulado con éxito');
     },
-    onError: (error: AxiosError<any>) => {
-      const message = error.response?.data?.message || 'Ocurrió un error al anular el pago';
-      toast.error(message);
+    onError: (error: unknown) => {
+      const apiError = error as ApiError;
+      const message = apiError.response?.data?.message;
+      
+      toast.error(
+        Array.isArray(message)
+          ? message[0]
+          : (message || 'Ocurrió un error al anular el pago')
+      );
     },
   });
 };

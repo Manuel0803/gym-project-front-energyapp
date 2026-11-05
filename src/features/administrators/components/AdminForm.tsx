@@ -15,7 +15,13 @@ interface AdminFormProps {
   isEditMode?: boolean;
 }
 
-export function AdminForm({ defaultValues, onSubmit, isPending, submitLabel, isEditMode }: AdminFormProps) {
+export function AdminForm({ 
+  defaultValues, 
+  onSubmit, 
+  isPending, 
+  submitLabel, 
+  isEditMode = false 
+}: AdminFormProps) {
   const {
     register,
     handleSubmit,
@@ -31,7 +37,11 @@ export function AdminForm({ defaultValues, onSubmit, isPending, submitLabel, isE
   });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
+    <form 
+      onSubmit={handleSubmit(onSubmit)} 
+      className="flex flex-col gap-6"
+      noValidate
+    >
       <div className="border border-border-primary rounded-lg bg-surface flex flex-col p-6 gap-8 relative">
         <div className="flex flex-col gap-6">
           <h2 className="text-[15px] font-bold text-text-main">
@@ -79,19 +89,30 @@ export function AdminForm({ defaultValues, onSubmit, isPending, submitLabel, isE
         <div className="flex items-center justify-end gap-3 pt-4 border-t border-border-primary">
           <Link
             href="/dashboard/administradores"
-            className="px-6 py-2.5 border border-border-primary bg-transparent text-text-muted hover:text-text-main hover:bg-surface-hover rounded-sm text-sm font-medium transition-colors cursor-pointer"
+            aria-disabled={isPending}
+            tabIndex={isPending ? -1 : 0}
+            className={`px-6 py-2.5 border border-border-primary bg-transparent text-text-muted rounded-sm text-sm font-medium transition-colors ${
+              isPending 
+                ? 'opacity-50 cursor-not-allowed pointer-events-none' 
+                : 'hover:text-text-main hover:bg-surface-hover cursor-pointer'
+            }`}
           >
             Cancelar
           </Link>
+          
           <button
             type="submit"
             disabled={isPending}
+            aria-disabled={isPending}
             className="px-6 py-2.5 flex items-center justify-center gap-2 bg-brand-main hover:bg-brand-hover text-white rounded-sm text-sm font-medium transition-colors disabled:opacity-50 cursor-pointer"
           >
             {isPending ? (
-              <><Loader2 className="w-4 h-4 animate-spin" /> {isEditMode ? 'Guardando...' : 'Creando...'}</>
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" /> 
+                <span>{isEditMode ? 'Guardando...' : 'Creando...'}</span>
+              </>
             ) : (
-              submitLabel
+              <span>{submitLabel}</span>
             )}
           </button>
         </div>

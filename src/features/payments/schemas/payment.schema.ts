@@ -42,4 +42,6 @@ export const paymentSchema = z.object({
     .optional(),
 });
 
+export type PaymentFormInput = z.input<typeof paymentSchema>;
+
 export type PaymentFormValues = z.infer<typeof paymentSchema>;

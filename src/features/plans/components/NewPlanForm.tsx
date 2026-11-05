@@ -3,10 +3,11 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useForm } from 'react-hook-form';
+import { useForm, Resolver } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCreatePlan, useUpdatePlan } from '@/features/plans/hooks/usePlans';
 import {
+  PlanFormInput,
   PlanFormValues,
   planSchema,
 } from '@/features/plans/schemas/plan.schema';
@@ -14,6 +15,16 @@ import { InputField } from '@/common/components/ui/InputField';
 import { TextareaField } from '@/common/components/ui/TextareaField';
 import { Loader2, AlertCircle } from 'lucide-react';
 import { Modal } from '@/common/components/ui/Modal';
+import { ApiError } from '@/common/interfaces/api-error.interface';
+
+type InactivePlanError = ApiError & {
+  response?: {
+    data?: {
+      isInactive?: boolean;
+      planId?: string;
+    };
+  };
+};
 
 export function NewPlanForm() {
   const router = useRouter();
@@ -28,8 +39,8 @@ export function NewPlanForm() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<PlanFormValues>({
-    resolver: zodResolver(planSchema),
+  } = useForm<PlanFormInput, unknown, PlanFormValues>({
+    resolver: zodResolver(planSchema) as unknown as Resolver<PlanFormInput, unknown, PlanFormValues>,
     defaultValues: {
       durationDays: 30,
     },
@@ -40,9 +51,10 @@ export function NewPlanForm() {
       onSuccess: () => {
         router.push('/dashboard/planes');
       },
-      onError: (error: any) => {
-        if (error.response?.data?.isInactive) {
-          setInactivePlan({ id: error.response.data.planId, data });
+      onError: (error: unknown) => {
+        const apiError = error as InactivePlanError;
+        if (apiError.response?.data?.isInactive && apiError.response.data.planId) {
+          setInactivePlan({ id: apiError.response.data.planId, data });
         }
       },
     });
@@ -70,12 +82,13 @@ export function NewPlanForm() {
     <>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="border border-border-primary rounded-lg bg-surface flex flex-col p-6 gap-8 "
+        noValidate
+        className="border border-border-primary rounded-lg bg-surface flex flex-col p-6 gap-8"
       >
-        <div className="flex flex-col gap-6">
-          <h2 className="text-[15px] font-bold text-text-main">
+        <fieldset className="flex flex-col gap-6">
+          <legend className="text-[15px] font-bold text-text-main mb-4">
             Información general
-          </h2>
+          </legend>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <InputField
@@ -101,17 +114,17 @@ export function NewPlanForm() {
                 },
               })}
               error={errors.price?.message}
-              icon={<span className="text-text-muted">$</span>}
+              icon={<span aria-hidden="true" className="text-text-muted">$</span>}
             />
           </div>
-        </div>
+        </fieldset>
 
         <hr className="border-border-primary" />
 
-        <div className="flex flex-col gap-6">
-          <h2 className="text-[15px] font-bold text-text-main">
+        <fieldset className="flex flex-col gap-6">
+          <legend className="text-[15px] font-bold text-text-main mb-4">
             Especificaciones del plan
-          </h2>
+          </legend>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <InputField
@@ -137,7 +150,7 @@ export function NewPlanForm() {
               Escribe un beneficio por línea para mostrarlos en la lista.
             </p>
           </div>
-        </div>
+        </fieldset>
 
         <div className="flex items-center justify-end gap-3 pt-4 border-t border-border-primary">
           <Link
@@ -149,15 +162,15 @@ export function NewPlanForm() {
           <button
             type="submit"
             disabled={isPending}
-            className="bg-brand-main hover:bg-brand-hover text-white flex items-center justify-center gap-2 px-6 py-2.5 rounded-sm font-medium text-sm transition-colors  disabled:opacity-50 cursor-pointer"
+            className="bg-brand-main hover:bg-brand-hover text-white flex items-center justify-center gap-2 px-6 py-2.5 rounded-sm font-medium text-sm transition-colors disabled:opacity-50 cursor-pointer"
           >
             {isPending ? (
               <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                Guardando...
+                <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />
+                <span>Guardando...</span>
               </>
             ) : (
-              'Crear plan'
+              <span>Crear plan</span>
             )}
           </button>
         </div>
@@ -169,8 +182,11 @@ export function NewPlanForm() {
         title="Plan Inactivo Detectado"
       >
         <div className="flex flex-col gap-4">
-          <div className="flex items-start gap-3 text-warning-main bg-warning-surface p-4 rounded border border-warning-main/50">
-            <AlertCircle size={20} className="shrink-0 mt-0.5" />
+          <div 
+            className="flex items-start gap-3 text-warning-main bg-warning-surface p-4 rounded border border-warning-main/50"
+            role="alert"
+          >
+            <AlertCircle size={20} className="shrink-0 mt-0.5" aria-hidden="true" />
             <p className="text-sm leading-relaxed">
               Ya existe un plan con este nombre pero fue eliminado anteriormente. Puedes reactivarlo para volver a usarlo. ¿Qué deseas hacer con la información?
             </p>

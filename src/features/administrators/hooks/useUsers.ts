@@ -6,6 +6,7 @@ import {
   UpdateUserPayload,
 } from '../interfaces/user.interface';
 import toast from 'react-hot-toast';
+import { ApiError } from '@/common/interfaces/api-error.interface';
 
 export const useUsers = (
   page: number = 1,
@@ -36,10 +37,12 @@ export const useCreateUser = () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
       toast.success('Usuario creado con éxito');
     },
-    onError: (error: any) => {
-      const message =
-        error.response?.data?.message || 'Ocurrió un error al crear el usuario';
-      toast.error(message);
+    onError: (error: ApiError) => {
+      console.error('[useUsers] Failed to create user:', error);
+      const message = error.response?.data?.message;
+      toast.error(
+        Array.isArray(message) ? message[0] : (message || 'Ocurrió un error al crear el usuario')
+      );
     },
   });
 };
@@ -50,14 +53,17 @@ export const useUpdateUser = () => {
   return useMutation({
     mutationFn: ({ id, payload }: { id: string; payload: UpdateUserPayload }) =>
       UsersService.update(id, payload),
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
+      queryClient.invalidateQueries({ queryKey: ['user', variables.id] });
       toast.success('Usuario actualizado con éxito');
     },
-    onError: (error: any) => {
-      const message =
-        error.response?.data?.message || 'No se pudo actualizar el usuario';
-      toast.error(message);
+    onError: (error: ApiError) => {
+      console.error('[useUsers] Failed to update user:', error);
+      const message = error.response?.data?.message;
+      toast.error(
+        Array.isArray(message) ? message[0] : (message || 'No se pudo actualizar el usuario')
+      );
     },
   });
 };
@@ -67,15 +73,17 @@ export const useDeleteUser = () => {
 
   return useMutation({
     mutationFn: (id: string) => UsersService.remove(id),
-    onSuccess: () => {
+    onSuccess: (_, id) => {
+      queryClient.removeQueries({ queryKey: ['user', id] });
       queryClient.invalidateQueries({ queryKey: ['users'] });
       toast.success('Usuario eliminado con éxito');
     },
-    onError: (error: any) => {
-      const message =
-        error.response?.data?.message ||
-        'Ocurrió un error al eliminar el usuario';
-      toast.error(message);
+    onError: (error: ApiError) => {
+      console.error('[useUsers] Failed to delete user:', error);
+      const message = error.response?.data?.message;
+      toast.error(
+        Array.isArray(message) ? message[0] : (message || 'Ocurrió un error al eliminar el usuario')
+      );
     },
   });
 };
@@ -89,5 +97,15 @@ export const useChangePassword = () => {
       id: string;
       payload: ChangePasswordPayload;
     }) => UsersService.changePassword(id, payload),
+    onSuccess: () => {
+      toast.success('Contraseña actualizada con éxito');
+    },
+    onError: (error: ApiError) => {
+      console.error('[useUsers] Failed to change password:', error);
+      const message = error.response?.data?.message;
+      toast.error(
+        Array.isArray(message) ? message[0] : (message || 'Error al cambiar la contraseña')
+      );
+    },
   });
 };

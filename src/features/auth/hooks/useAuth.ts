@@ -1,9 +1,14 @@
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import { useAuthStore } from '../store/auth.store';
-import { AuthService } from '../services/auth.service';
-import { AuthResponse } from '../interfaces/auth.interface';
+import {
+  AuthResponse,
+  OnboardingResponse,
+} from '../interfaces/auth.interface';
+import { ApiError } from '@/common/interfaces/api-error.interface';
 import toast from 'react-hot-toast';
+import { AuthService } from '../services/auth.service';
+import { decodeJwt } from '@/common/utils/jwt.utils';
 
 export const useLogin = () => {
   const setLogin = useAuthStore((state) => state.setLogin);
@@ -13,14 +18,65 @@ export const useLogin = () => {
     mutationFn: AuthService.login,
     onSuccess: (data: AuthResponse, variables) => {
       setLogin(data, variables.domain);
-      toast.success(`¡Bienvenido, ${data.user.name}!`);
-      router.push('/dashboard');
+
+      const decoded = decodeJwt(data.access_token);
+      const requiresOnboarding =
+        typeof decoded?.requiresOnboarding === 'boolean'
+          ? decoded.requiresOnboarding
+          : (data.user?.requiresOnboarding ?? false);
+
+      const role = (decoded?.role || data.user?.role || '').toString().toUpperCase();
+
+      toast.success(`¡Bienvenido, ${data.user?.name || 'Usuario'}!`);
+
+      if (requiresOnboarding) {
+        router.push('/onboarding');
+      } else if (role === 'CUSTOMER') {
+        router.push('/alumno');
+      } else if (role === 'SUPER_ADMIN') {
+        router.push('/super-admin/gimnasios');
+      } else if (role === 'TRAINER' || role === 'PROFESSOR' || role === 'PROFESOR') {
+        router.push('/profesor');
+      } else {
+        router.push('/dashboard');
+      }
     },
-    onError: (error: any) => {
-      const errorMessage =
-        error?.response?.data?.message || 'Error al iniciar sesión';
-      toast.error(errorMessage);
-      console.error('Error al iniciar sesión:', errorMessage);
+    onError: (error: ApiError) => {
+      console.error('[useAuth] Login failed:', error);
+      const message = error?.response?.data?.message;
+      const errorText = Array.isArray(message)
+        ? message.join(', ')
+        : message || error?.response?.data?.error || 'Credenciales inválidas. Por favor verifique sus datos.';
+      toast.error(errorText);
+    },
+  });
+};
+
+export const useOnboarding = () => {
+  const setOnboardingComplete = useAuthStore(
+    (state) => state.setOnboardingComplete
+  );
+  const router = useRouter();
+
+  return useMutation({
+    mutationFn: AuthService.onboarding,
+    onSuccess: (data: OnboardingResponse) => {
+      setOnboardingComplete({
+        access_token: data.access_token,
+        refresh_token: data.refresh_token,
+      });
+      toast.success('¡Perfil configurado con éxito! Bienvenido.');
+      router.replace('/alumno');
+    },
+    onError: (error: ApiError) => {
+      console.error('[useAuth] Onboarding failed:', error);
+      const message = error?.response?.data?.message;
+      const errorText = Array.isArray(message)
+        ? message.join(', ')
+        : message ||
+          error?.response?.data?.error ||
+          'Error al completar la configuración inicial. Inténtalo nuevamente.';
+      toast.error(errorText);
     },
   });
 };

@@ -1,41 +1,42 @@
+import { Metadata } from 'next';
 import { LoginForm } from '@/features/auth/components/LoginForm';
-import { Dumbbell, ShieldAlert } from 'lucide-react';
+import { ShieldAlert } from 'lucide-react';
+
+export const metadata: Metadata = {
+  title: 'Iniciar Sesión | EnergyAPP',
+  description: 'Terminal de acceso seguro para usuarios de EnergyAPP.',
+};
 
 export default function LoginPage() {
   return (
-    <div className="w-full max-w-100 flex flex-col items-center">
-      <div className="flex flex-col items-center mb-8">
-        <div className="w-12 h-12 rounded-full border border-border-primary bg-surface flex items-center justify-center mb-4  transition-colors">
-          <Dumbbell className="text-brand-main" size={24} />
-        </div>
-        <h1 className="text-xl font-bold text-text-main transition-colors">
-          ChacuGym
+    <main className="w-full max-w-[420px] flex flex-col items-center">
+      <header className="flex flex-col items-center mb-8 text-center">
+        <h1 className="text-3xl font-extrabold text-text-main tracking-tight transition-colors">
+          EnergyAPP
         </h1>
-        <p className="text-sm text-text-muted mt-1 transition-colors">
-          Terminal de Inicio Administradores
+        <p className="text-sm text-text-muted mt-1.5 transition-colors">
+          Terminal de Inicio de Sesión
         </p>
-      </div>
+      </header>
 
-      <div className="w-full bg-surface border-t-4 border-t-brand-main border border-border-primary rounded-xl p-6 shadow-xl dark:shadow-2xl transition-colors">
+      <section className="w-full bg-surface border-t-4 border-t-brand-main border border-border-primary rounded-2xl p-6 sm:p-8 shadow-xl dark:shadow-2xl transition-colors">
         <LoginForm />
 
-        <div className="mt-6 pt-4 border-t border-border-primary flex flex-col items-center gap-4 transition-colors">
+        <footer className="mt-6 pt-5 border-t border-border-primary flex flex-col items-center gap-2 transition-colors">
           <div className="flex items-center justify-center gap-2 text-text-muted transition-colors">
-            <ShieldAlert size={14} />
+            <ShieldAlert size={14} aria-hidden="true" />
             <span className="text-[10px] font-bold tracking-wider uppercase">
               Terminal de Acceso Seguro
             </span>
           </div>
-        </div>
 
-        <div className="mt-3 pt-2 border-t border-border-primary flex flex-col items-center gap-4 transition-colors">
-          <div className="flex items-center justify-center gap-2 text-text-muted transition-colors">
-            <span className="text-[10px] font-bold tracking-wider uppercase">
-              v1.3.0 - by Chacú.IO
+          <div className="flex items-center justify-center text-text-muted transition-colors">
+            <span className="text-[10px] font-bold tracking-wider uppercase opacity-75">
+              EnergyAPP Platform
             </span>
           </div>
-        </div>
-      </div>
-    </div>
+        </footer>
+      </section>
+    </main>
   );
 }

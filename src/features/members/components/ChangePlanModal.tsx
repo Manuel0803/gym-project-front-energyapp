@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Modal } from '@/common/components/ui/Modal';
 import { Loader2, Calendar, CreditCard } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useChangePlan } from '../hooks/useMembers';
+import { Plan } from '@/features/plans/interfaces/plan.interface';
 
 interface Props {
   isOpen: boolean;
@@ -10,29 +11,46 @@ interface Props {
   memberUuid: string;
   hasActiveSubscription: boolean;
   nextDueDate: string;
-  plans: any[];
+  plans: Plan[];
 }
 
-export function ChangePlanModal({ isOpen, onClose, memberUuid, hasActiveSubscription, nextDueDate, plans }: Props) {
+interface ChangePlanPayload {
+  newPlanUuid: string;
+  activationType: 'IMMEDIATE' | 'SCHEDULED';
+  registerPayment: boolean;
+  paymentMethod: string;
+  customStartDate?: string;
+}
+
+export function ChangePlanModal({ 
+  isOpen, 
+  onClose, 
+  memberUuid, 
+  hasActiveSubscription, 
+  nextDueDate, 
+  plans 
+}: Props) {
   const { mutate: changePlan, isPending } = useChangePlan();
 
   const [selectedNewPlanUuid, setSelectedNewPlanUuid] = useState<string>('');
+  const [registerPayment, setRegisterPayment] = useState<boolean>(true);
   const [paymentMethod, setPaymentMethod] = useState<string>('CASH');
   const [activationType, setActivationType] = useState<'IMMEDIATE' | 'SCHEDULED'>('IMMEDIATE');
   const [isRetroactive, setIsRetroactive] = useState(false);
   const [customStartDate, setCustomStartDate] = useState('');
-  const [registerPayment, setRegisterPayment] = useState(false);
 
-  useEffect(() => {
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
+  if (isOpen !== prevIsOpen) {
+    setPrevIsOpen(isOpen);
     if (isOpen) {
       setActivationType(hasActiveSubscription ? 'SCHEDULED' : 'IMMEDIATE');
       setSelectedNewPlanUuid('');
       setPaymentMethod('CASH');
+      setRegisterPayment(true);
       setIsRetroactive(false);
       setCustomStartDate('');
-      setRegisterPayment(false);
     }
-  }, [isOpen, hasActiveSubscription]);
+  }
 
   const handleClose = () => {
     if (!isPending) onClose();
@@ -44,11 +62,11 @@ export function ChangePlanModal({ isOpen, onClose, memberUuid, hasActiveSubscrip
       return;
     }
 
-    const payload: any = {
+    const payload: ChangePlanPayload = {
       newPlanUuid: selectedNewPlanUuid,
-      paymentMethod,
       activationType,
-      registerPayment
+      registerPayment,
+      paymentMethod,
     };
 
     if (isRetroactive && customStartDate) {
@@ -62,23 +80,32 @@ export function ChangePlanModal({ isOpen, onClose, memberUuid, hasActiveSubscrip
     );
   };
 
+  const priceFormatter = new Intl.NumberFormat('es-AR');
+
   return (
     <Modal isOpen={isOpen} onClose={handleClose} title="Cambiar Plan de Membresía">
       <div className="flex flex-col gap-5">
 
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-bold text-text-main">Seleccionar Nuevo Plan</label>
-          <select value={selectedNewPlanUuid} onChange={(e) => setSelectedNewPlanUuid(e.target.value)} disabled={isPending} className="w-full bg-background border border-border-primary text-text-main text-sm rounded-md focus:ring-brand-main focus:border-brand-main block p-3 outline-none transition-colors">
+          <label htmlFor="newPlan" className="text-sm font-bold text-text-main">Seleccionar Nuevo Plan</label>
+          <select 
+            id="newPlan"
+            value={selectedNewPlanUuid} 
+            onChange={(e) => setSelectedNewPlanUuid(e.target.value)} 
+            disabled={isPending} 
+            className="w-full bg-background border border-border-primary text-text-main text-sm rounded-md focus:ring-brand-main focus:border-brand-main block p-3 outline-none transition-colors"
+          >
             <option value="" disabled>-- Elige un plan --</option>
             {plans?.map((plan) => (
               <option key={plan.uuid} value={plan.uuid}>
-                {plan.name} - ${Number(plan.price).toLocaleString('es-AR')} ({plan.durationDays} días)
+                {plan.name} - ${priceFormatter.format(Number(plan.price))} ({plan.durationDays} días)
               </option>
             ))}
           </select>
         </div>
 
-        <div className="flex flex-col gap-4 border border-border-primary rounded-lg p-4 bg-background">
+        <fieldset className="flex flex-col gap-4 border border-border-primary rounded-lg p-4 bg-background">
+          <legend className="sr-only">Configuración de fecha</legend>
           <label className="flex items-center gap-2 cursor-pointer">
             <input
               type="checkbox"
@@ -88,15 +115,18 @@ export function ChangePlanModal({ isOpen, onClose, memberUuid, hasActiveSubscrip
               className="accent-brand-main w-4 h-4"
             />
             <span className="text-sm font-bold text-text-main flex items-center gap-2">
-              <Calendar size={16} className="text-text-muted" />
+              <Calendar size={16} className="text-text-muted" aria-hidden="true" />
               Carga retroactiva (Fecha manual)
             </span>
           </label>
 
           {isRetroactive && (
             <div className="flex flex-col gap-2 pt-2 border-t border-border-primary animate-in fade-in zoom-in-95 duration-200">
-              <label className="text-xs font-bold text-text-muted uppercase">¿Qué día inició realmente?</label>
+              <label htmlFor="retroDate" className="text-xs font-bold text-text-muted uppercase tracking-wider">
+                ¿Qué día inició realmente?
+              </label>
               <input
+                id="retroDate"
                 type="date"
                 value={customStartDate}
                 onChange={(e) => setCustomStartDate(e.target.value)}
@@ -108,11 +138,11 @@ export function ChangePlanModal({ isOpen, onClose, memberUuid, hasActiveSubscrip
               </span>
             </div>
           )}
-        </div>
+        </fieldset>
 
         {!isRetroactive && (
-          <div className="flex flex-col gap-3 animate-in fade-in duration-300">
-            <label className="text-sm font-bold text-text-main">¿Cuándo comienza este nuevo plan?</label>
+          <fieldset className="flex flex-col gap-3 animate-in fade-in duration-300">
+            <legend className="text-sm font-bold text-text-main mb-2">¿Cuándo comienza este nuevo plan?</legend>
             <div className="flex flex-col gap-2">
               {hasActiveSubscription && (
                 <label className={`flex items-start gap-3 p-3 border rounded-lg cursor-pointer transition-all ${activationType === 'SCHEDULED' ? 'border-brand-main bg-brand-main/5' : 'border-border-primary bg-background hover:bg-surface-hover'}`}>
@@ -131,10 +161,11 @@ export function ChangePlanModal({ isOpen, onClose, memberUuid, hasActiveSubscrip
                 </div>
               </label>
             </div>
-          </div>
+          </fieldset>
         )}
 
-        <div className="flex flex-col gap-4 border border-border-primary rounded-lg p-4 bg-background">
+        <fieldset className="flex flex-col gap-4 border border-border-primary rounded-lg p-4 bg-background mt-2">
+          <legend className="sr-only">Configuración de pago</legend>
           <label className="flex items-center gap-2 cursor-pointer">
             <input 
               type="checkbox" 
@@ -144,15 +175,23 @@ export function ChangePlanModal({ isOpen, onClose, memberUuid, hasActiveSubscrip
               className="accent-brand-main w-4 h-4"
             />
             <span className="text-sm font-bold text-text-main flex items-center gap-2">
-              <CreditCard size={16} className="text-text-muted" />
-              Registrar pago automáticamente
+              <CreditCard size={16} className="text-text-muted" aria-hidden="true" />
+              Registrar pago en el sistema
             </span>
           </label>
 
-          {registerPayment && (
+          {registerPayment ? (
             <div className="flex flex-col gap-2 pt-2 border-t border-border-primary animate-in fade-in zoom-in-95 duration-200">
-              <label className="text-sm font-bold text-text-main">Método de Pago</label>
-              <select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)} disabled={isPending} className="w-full bg-surface border border-border-primary text-text-main text-sm rounded-md focus:ring-brand-main focus:border-brand-main block p-2.5 outline-none transition-colors">
+              <label htmlFor="changePlanPaymentMethod" className="text-xs font-bold text-text-muted uppercase tracking-wider">
+                Método de Pago
+              </label>
+              <select 
+                id="changePlanPaymentMethod"
+                value={paymentMethod} 
+                onChange={(e) => setPaymentMethod(e.target.value)} 
+                disabled={isPending} 
+                className="w-full bg-surface border border-border-primary text-text-main text-sm rounded-md focus:ring-brand-main focus:border-brand-main block p-2.5 outline-none transition-colors"
+              >
                 <option value="CASH">Efectivo</option>
                 <option value="DEBIT_CARD">Tarjeta de Débito</option>
                 <option value="CREDIT_CARD">Tarjeta de Crédito</option>
@@ -161,13 +200,31 @@ export function ChangePlanModal({ isOpen, onClose, memberUuid, hasActiveSubscrip
                 <option value="OTHER">Otro</option>
               </select>
             </div>
+          ) : (
+            <div className="pt-2 border-t border-border-primary animate-in fade-in duration-200" role="alert">
+              <p className="text-xs text-warning-main font-medium leading-relaxed">
+                Se cambiará el plan, pero no impactará en el historial de pagos ni en la caja.
+              </p>
+            </div>
           )}
-        </div>
+        </fieldset>
 
-        <div className="flex justify-end gap-3 mt-4 pt-4 border-t border-border-primary">
-          <button onClick={handleClose} disabled={isPending} className="px-4 py-2 text-sm font-bold text-text-muted hover:text-text-main transition-colors disabled:opacity-50 cursor-pointer">Cancelar</button>
-          <button onClick={handleChangePlan} disabled={isPending || !selectedNewPlanUuid || (isRetroactive && !customStartDate)} className="flex items-center justify-center gap-2 px-6 py-2 bg-brand-main text-white text-sm font-bold rounded-md hover:bg-opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
-            {isPending ? <><Loader2 size={16} className="animate-spin" /> Procesando...</> : 'Confirmar y Cambiar Plan'}
+        <div className="flex justify-end gap-3 mt-2 pt-4 border-t border-border-primary">
+          <button 
+            type="button" 
+            onClick={handleClose} 
+            disabled={isPending} 
+            className="px-4 py-2 text-sm font-bold text-text-muted hover:text-text-main transition-colors disabled:opacity-50 cursor-pointer"
+          >
+            Cancelar
+          </button>
+          <button 
+            type="button" 
+            onClick={handleChangePlan} 
+            disabled={isPending || !selectedNewPlanUuid || (isRetroactive && !customStartDate)} 
+            className="flex items-center justify-center gap-2 px-6 py-2 bg-brand-main text-white text-sm font-bold rounded-md hover:bg-opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed min-w-50 cursor-pointer"
+          >
+            {isPending ? <><Loader2 size={16} className="animate-spin" aria-hidden="true" /> Procesando...</> : 'Confirmar y Cambiar'}
           </button>
         </div>
       </div>

@@ -28,5 +28,4 @@ export const userSchema = z.object({
 });
 
 export type UserFormValues = z.infer<typeof userSchema>;
-
-export type EditAdminFormValues = z.infer<typeof userSchema>;
+export type EditAdminFormValues = UserFormValues;

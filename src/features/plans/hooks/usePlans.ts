@@ -4,7 +4,18 @@ import {
   CreatePlanPayload,
   UpdatePlanPayload,
 } from '../interfaces/plan.interface';
+import { ApiError } from '@/common/interfaces/api-error.interface';
 import toast from 'react-hot-toast';
+
+interface PlanApiError extends ApiError {
+  response?: {
+    data?: {
+      message?: string | string[];
+      isInactive?: boolean;
+      planId?: string;
+    };
+  };
+}
 
 export const usePlans = (page: number = 1, limit: number = 10) => {
   return useQuery({
@@ -31,12 +42,18 @@ export const useCreatePlan = () => {
       queryClient.invalidateQueries({ queryKey: ['plans'] });
       toast.success('Plan creado con éxito');
     },
-    onError: (error: any) => {
-      const isInactive = error.response?.data?.isInactive;
-      const message = error.response?.data?.message || 'Ocurrió un error al crear el plan';
+    onError: (error: unknown) => {
+      const apiError = error as PlanApiError;
+      
+      const isInactive = apiError.response?.data?.isInactive;
+      const message = apiError.response?.data?.message;
       
       if (!isInactive) {
-        toast.error(message);
+        toast.error(
+          Array.isArray(message)
+            ? message[0]
+            : (message || 'Ocurrió un error al crear el plan')
+        );
       }
     },
   });
@@ -52,13 +69,16 @@ export const useUpdatePlan = () => {
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['plans'] });
       queryClient.invalidateQueries({ queryKey: ['plan', variables.id] });
-      
       toast.success('Plan actualizado con éxito');
     },
-    onError: (error: any) => {
-      const message =
-        error.response?.data?.message || 'No se pudo actualizar el plan';
-      toast.error(message);
+    onError: (error: unknown) => {
+      const apiError = error as ApiError;
+      const message = apiError.response?.data?.message;
+      toast.error(
+        Array.isArray(message)
+          ? message[0]
+          : (message || 'No se pudo actualizar el plan')
+      );
     },
   });
 };
@@ -70,15 +90,17 @@ export const useDeletePlan = () => {
     mutationFn: (id: string) => PlansService.remove(id),
     onSuccess: (_, id) => {
       queryClient.cancelQueries({ queryKey: ['plan', id] });
-      
       queryClient.invalidateQueries({ queryKey: ['plans'] });
-      
       toast.success('Plan eliminado con éxito');
     },
-    onError: (error: any) => {
-      const message =
-        error.response?.data?.message || 'Ocurrió un error al eliminar el plan';
-      toast.error(message);
+    onError: (error: unknown) => {
+      const apiError = error as ApiError;
+      const message = apiError.response?.data?.message;
+      toast.error(
+        Array.isArray(message)
+          ? message[0]
+          : (message || 'Ocurrió un error al eliminar el plan')
+      );
     },
   });
 };
