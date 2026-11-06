@@ -9,6 +9,7 @@ import { AuthGuard } from '@/features/auth/components/AuthGuard';
 import { ThemeToggle } from '@/common/components/layout/ThemeToggle';
 import { GlobalSearchInput } from '@/common/components/layout/GlobalSearchInput';
 import { Modal } from '@/common/components/ui/Modal';
+import { GymAIChat } from '@/features/gym-ai/components/GymAIChat';
 import toast from 'react-hot-toast';
 import {
   LayoutDashboard,
@@ -173,6 +174,8 @@ export function DashboardShell({
             {children}
           </div>
         </main>
+
+        <GymAIChat />
       </div>
     </AuthGuard>
   );
