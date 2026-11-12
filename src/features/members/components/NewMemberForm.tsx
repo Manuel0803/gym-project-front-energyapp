@@ -15,15 +15,13 @@ import { CreateMemberPayload, Member } from '../interfaces/members.interface';
 import { InputField } from '@/common/components/ui/InputField';
 import { TextareaField } from '@/common/components/ui/TextareaField';
 import { uploadImageToCloudinary } from '@/common/services/cloudinary.service';
-import { Phone, IdCard, UserPlus, HeartPulse, Loader2, Dumbbell } from 'lucide-react';
+import { Phone, IdCard, UserPlus, HeartPulse, Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { ImageUpload } from '@/common/components/ui/ImageUpload';
-import { useProfessors } from '@/features/professors/hooks/useProfessors';
 
 export function NewMemberForm() {
   const router = useRouter();
   const createMemberMutation = useCreateMember();
-  const { data: professors = [], isLoading: isLoadingProfessors } = useProfessors();
   
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -40,7 +38,6 @@ export function NewMemberForm() {
       surname: '',
       phoneNumber: '',
       birthDate: '',
-      professorAssignedUuid: '',
       observations: '',
       emergencyName: '',
       emergencyPhone: '',
@@ -65,7 +62,6 @@ export function NewMemberForm() {
         surname: data.surname,
         birthDate: data.birthDate,
         phoneNumber: data.phoneNumber || undefined,
-        professorAssignedUuid: data.professorAssignedUuid?.trim() || null,
         observations: data.observations || undefined,
         profileImageUrl,
         emergencyContact: hasEmergency
@@ -80,7 +76,7 @@ export function NewMemberForm() {
       createMemberMutation.mutate(payload, {
         onSuccess: (response: Member) => {
           const memberUuid = response.uuid;
-          toast.success('Miembro registrado. Por favor, asígnale un plan para activarlo.', { id: 'create-member' });
+          toast.success('Socio registrado. Por favor, asígnale un plan para activarlo.', { id: 'create-member' });
           
           if (memberUuid) {
             router.push(`/admin/alumnos/${memberUuid}`);
@@ -105,10 +101,10 @@ export function NewMemberForm() {
         <div className="border border-border-primary rounded-lg bg-surface flex flex-col p-6 gap-8 shadow-sm">
           
           <fieldset className="flex flex-col gap-6">
-            <legend className="sr-only">Ficha del Nuevo Miembro</legend>
+            <legend className="sr-only">Ficha del Nuevo Socio</legend>
             <div className="flex items-center gap-2">
               <UserPlus className="text-brand-main" size={20} aria-hidden="true" />
-              <h2 className="text-[15px] font-bold text-text-main">Ficha del Nuevo Miembro</h2>
+              <h2 className="text-[15px] font-bold text-text-main">Ficha del Nuevo Socio</h2>
             </div>
             
             <div className="flex justify-center pb-4">
@@ -161,30 +157,6 @@ export function NewMemberForm() {
                 error={errors.phoneNumber?.message}
                 icon={<Phone size={14} className="text-text-muted" aria-hidden="true" />}
               />
-            </div>
-
-            {/* Asignación Manual de Profesor */}
-            <div className="flex flex-col gap-1.5 pt-2">
-              <label className="text-xs font-bold text-text-muted uppercase tracking-wider flex items-center gap-1.5">
-                <Dumbbell size={14} className="text-brand-main" aria-hidden="true" />
-                <span>Profesor / Entrenador Asignado</span>
-                <span className="text-[10px] text-text-muted font-normal lowercase">(opcional)</span>
-              </label>
-              <select
-                {...register('professorAssignedUuid')}
-                disabled={isSubmitting || isLoadingProfessors}
-                className="w-full bg-background border border-border-primary rounded-lg px-3 py-2 text-xs text-text-main focus:outline-none focus:border-brand-main transition-colors disabled:opacity-50 cursor-pointer"
-              >
-                <option value="">Sin profesor asignado (Opcional)</option>
-                {professors.map((prof) => (
-                  <option key={prof.uuid} value={prof.uuid}>
-                    {prof.name} {prof.surname} ({prof.email})
-                  </option>
-                ))}
-              </select>
-              <p className="text-[11px] text-text-muted">
-                Si seleccionas un profesor, este socio aparecerá en su sección &ldquo;Mis Alumnos&rdquo; para que pueda crearle y adaptarle sus rutinas de entrenamiento.
-              </p>
             </div>
           </fieldset>
 
@@ -249,15 +221,15 @@ export function NewMemberForm() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex items-center justify-center gap-2 px-6 py-2.5 bg-brand-main hover:bg-brand-hover text-white rounded-sm text-sm font-medium transition-colors disabled:opacity-50 cursor-pointer min-w-35"
+              className="px-6 py-2.5 flex items-center justify-center gap-2 bg-brand-main hover:bg-brand-hover text-white rounded-sm text-sm font-medium transition-colors disabled:opacity-50 cursor-pointer"
             >
               {isSubmitting ? (
                 <>
-                  <Loader2 size={16} className="animate-spin" aria-hidden="true" />
-                  <span>Procesando...</span>
+                  <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />
+                  <span>{isUploading ? 'Subiendo foto...' : 'Registrando...'}</span>
                 </>
               ) : (
-                <span>Crear Miembro</span>
+                <span>Guardar Socio</span>
               )}
             </button>
           </div>

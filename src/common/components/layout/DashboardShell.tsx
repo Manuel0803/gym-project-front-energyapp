@@ -20,8 +20,6 @@ import {
   LogOut,
   Menu,
   X,
-  ShoppingCart,
-  Package,
 } from 'lucide-react';
 import { SidebarNav, NavItem } from './SidebarNav';
 
@@ -54,9 +52,7 @@ export function DashboardShell({
       icon: LayoutDashboard,
       exact: true,
     },
-    { name: 'Alumnos', href: '/admin/alumnos', icon: Users },
-    { name: 'Punto de Venta', href: '/admin/pos', icon: ShoppingCart },
-    { name: 'Inventario', href: '/admin/inventario', icon: Package },
+    { name: 'Socios', href: '/admin/alumnos', icon: Users },
     {
       name: 'Administradores',
       href: '/dashboard/administradores',
@@ -109,7 +105,6 @@ export function DashboardShell({
           </div>
 
           <div className="flex flex-col mt-auto mb-6 space-y-1">
-            
             <button
               onClick={() => setIsLogoutModalOpen(true)}
               className="flex items-center gap-4 px-8 py-3 transition-colors border-l-2 border-transparent text-text-muted hover:bg-danger-surface hover:text-danger-main hover:border-danger-main cursor-pointer w-full text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-danger-main"
@@ -129,51 +124,57 @@ export function DashboardShell({
             <p className="text-text-main">
               ¿Estás seguro de que deseas cerrar sesión?
             </p>
-
             <div className="flex justify-end gap-3 mt-4">
               <button
                 onClick={() => setIsLogoutModalOpen(false)}
-                className="px-4 py-2 text-sm font-medium text-text-main border border-border-primary hover:bg-surface-hover transition-colors rounded cursor-pointer"
+                className="px-4 py-2 rounded-lg border border-border-primary text-text-main hover:bg-surface-hover transition-colors text-sm font-medium cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-main"
               >
                 Cancelar
               </button>
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 text-sm font-medium text-white bg-danger-main hover:bg-danger-hover transition-colors rounded cursor-pointer"
+                className="px-4 py-2 rounded-lg bg-danger-main text-white hover:opacity-90 transition-opacity text-sm font-medium cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-danger-main"
               >
-                Sí, cerrar sesión
+                Cerrar sesión
               </button>
             </div>
           </div>
         </Modal>
 
-        <main className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
-          <header className="h-20 border-b border-border-primary bg-background flex items-center px-4 md:px-8 gap-4 transition-colors shrink-0">
+        <div className="flex-1 flex flex-col h-screen overflow-hidden">
+          <header className="h-20 bg-sidebar border-b border-border-primary flex items-center justify-between px-4 md:px-10 shrink-0 transition-colors gap-4">
             <button
-              className="md:hidden text-text-muted hover:text-text-main p-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-main rounded"
+              className="md:hidden text-text-muted hover:text-text-main p-2 -ml-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-main rounded"
               onClick={() => setIsSidebarOpen(true)}
               aria-label="Abrir menú"
+              aria-expanded={isSidebarOpen}
             >
               <Menu size={24} aria-hidden="true" />
             </button>
 
-            <div className="flex-1 flex items-center">
-              <Suspense fallback={<div className="w-full max-w-md h-10 bg-surface-hover animate-pulse rounded-lg" />}>
-                <div className="w-full max-w-xs md:max-w-md">
-                  <GlobalSearchInput key={pathname} />
-                </div>
+            <div className="flex-1 flex justify-center md:justify-start">
+              <Suspense
+                fallback={
+                  <div className="w-full max-w-md h-10 bg-background border border-border-primary rounded-md animate-pulse" />
+                }
+              >
+                <GlobalSearchInput key={pathname} />
               </Suspense>
             </div>
 
-            <div className="flex items-center shrink-0">
+            <div className="flex items-center">
               <ThemeToggle />
             </div>
           </header>
 
-          <div className="flex-1 p-4 md:p-8 overflow-y-auto" id="main-content">
+          <main 
+            id="main-content" 
+            tabIndex={-1} 
+            className="flex-1 overflow-y-auto p-4 md:p-10 bg-background transition-colors focus:outline-none"
+          >
             {children}
-          </div>
-        </main>
+          </main>
+        </div>
 
         <GymAIChat />
       </div>

@@ -49,12 +49,6 @@ export function StudentShell({ children }: StudentShellProps) {
       isActive: pathname === '/alumno',
     },
     {
-      name: 'Mi Rutina',
-      href: '/alumno/rutina',
-      icon: Dumbbell,
-      isActive: pathname.startsWith('/alumno/rutina'),
-    },
-    {
       name: 'Pagos',
       href: '/alumno/pagos',
       icon: CreditCard,
@@ -81,7 +75,7 @@ export function StudentShell({ children }: StudentShellProps) {
   return (
     <AuthGuard>
       <div className="min-h-screen bg-background text-text-main flex flex-col transition-colors pb-24 md:pb-8">
-        {/* Sticky In-App Expiration Alert Banner (CHGYM2-83) */}
+        {/* Sticky In-App Expiration Alert Banner */}
         {isExpired && (
           <div
             className="sticky top-0 z-50 bg-danger-main text-white px-4 py-2.5 shadow-md flex items-center justify-between gap-3 text-xs font-bold animate-in slide-in-from-top duration-200"
@@ -131,7 +125,7 @@ export function StudentShell({ children }: StudentShellProps) {
             <Link
               href="/alumno"
               className="flex items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-main rounded-lg"
-              aria-label="Ir al inicio de alumno"
+              aria-label="Ir al inicio del portal del socio"
             >
               <div className="w-9 h-9 rounded-lg bg-brand-surface border border-brand-main/30 flex items-center justify-center text-brand-main shrink-0">
                 <Dumbbell size={19} aria-hidden="true" />
@@ -141,7 +135,7 @@ export function StudentShell({ children }: StudentShellProps) {
                   EnergyAPP
                 </span>
                 <span className="text-[9px] text-brand-main font-bold tracking-wider uppercase block -mt-0.5">
-                  Portal del Alumno
+                  Portal del Socio
                 </span>
               </div>
             </Link>
@@ -149,7 +143,7 @@ export function StudentShell({ children }: StudentShellProps) {
             {/* Desktop Navigation Links */}
             <nav
               className="hidden md:flex items-center gap-1.5 ml-2"
-              aria-label="Navegación principal de alumno"
+              aria-label="Navegación principal del socio"
             >
               {navLinks.map((item) => {
                 const Icon = item.icon;
@@ -177,11 +171,11 @@ export function StudentShell({ children }: StudentShellProps) {
             {/* Desktop User Chip */}
             <div className="hidden sm:flex items-center gap-2.5 px-3 py-1.5 rounded-lg bg-surface border border-border-primary">
               <div className="w-7 h-7 rounded-lg bg-brand-main text-white font-bold flex items-center justify-center text-xs">
-                {user?.name ? user.name.slice(0, 2).toUpperCase() : 'AL'}
+                {user?.name ? user.name.slice(0, 2).toUpperCase() : 'SO'}
               </div>
               <div className="flex flex-col">
                 <span className="text-xs font-bold text-text-main leading-tight truncate max-w-28">
-                  {user?.name || 'Alumno'}
+                  {user?.name || 'Socio'}
                 </span>
                 <span className="text-[9px] text-success-main font-semibold flex items-center gap-1">
                   <span>Socio</span>
@@ -209,7 +203,7 @@ export function StudentShell({ children }: StudentShellProps) {
         {/* Fixed Mobile Bottom Navigation Bar (Hidden on Desktop: md:hidden) */}
         <nav
           className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-surface/95 backdrop-blur-xl border-t border-border-primary px-3 py-2 flex items-center justify-around shadow-lg transition-colors max-w-md mx-auto"
-          aria-label="Navegación del alumno"
+          aria-label="Navegación del socio"
         >
           {navLinks.map((item) => {
             const Icon = item.icon;
@@ -248,7 +242,7 @@ export function StudentShell({ children }: StudentShellProps) {
         >
           <div className="flex flex-col gap-4 mt-1">
             <p className="text-text-main text-xs sm:text-sm">
-              ¿Deseas cerrar tu sesión como alumno en este dispositivo?
+              ¿Deseas cerrar tu sesión en este dispositivo?
             </p>
 
             <div className="flex justify-end gap-3 mt-3">
