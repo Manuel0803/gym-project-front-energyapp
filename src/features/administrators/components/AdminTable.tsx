@@ -65,8 +65,8 @@ export function AdminTable() {
       )}
 
       <div className="overflow-x-auto">
-        <div className="min-w-150">
-          <div className="grid grid-cols-[2fr_1fr_2fr_100px] gap-4 items-center px-5 py-3 border-b border-border-primary bg-background text-[10px] font-bold text-text-muted tracking-widest uppercase">
+        <div className="min-w-175">
+          <div className="grid grid-cols-[1.8fr_1.6fr_2fr_80px] gap-4 items-center px-5 py-3 border-b border-border-primary bg-background text-[10px] font-bold text-text-muted tracking-widest uppercase">
             <div>Administrador e ID</div>
             <div>Rol</div>
             <div>Email</div>

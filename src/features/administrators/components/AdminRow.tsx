@@ -49,7 +49,7 @@ export function AdminRow({ admin, isCurrentUser }: AdminRowProps) {
   };
 
   return (
-    <div className="grid grid-cols-[2fr_1fr_2fr_100px] gap-4 items-center px-5 py-4 border-b border-border-primary hover:bg-surface-hover transition-colors last:border-b-0">
+    <div className="grid grid-cols-[1.8fr_1.6fr_2fr_80px] gap-4 items-center px-5 py-4 border-b border-border-primary hover:bg-surface-hover transition-colors last:border-b-0">
       <div className="min-w-0">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 shrink-0 rounded-full bg-background border border-border-primary flex items-center justify-center text-xs font-bold text-text-muted uppercase">
@@ -70,7 +70,7 @@ export function AdminRow({ admin, isCurrentUser }: AdminRowProps) {
       </div>
 
       <div className="min-w-0">
-        <span className={`inline-flex items-center px-2.5 py-0.5 text-[10px] font-bold border rounded-full uppercase tracking-wider ${roleConfig.className}`}>
+        <span className={`inline-flex items-center px-2.5 py-0.5 text-[10px] font-bold border rounded-full uppercase tracking-wider whitespace-nowrap ${roleConfig.className}`}>
           {roleConfig.label}
         </span>
       </div>

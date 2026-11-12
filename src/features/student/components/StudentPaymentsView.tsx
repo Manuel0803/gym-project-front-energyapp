@@ -11,7 +11,6 @@ import {
   Banknote,
   MessageCircle,
   Loader2,
-  ShieldCheck,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -44,10 +43,10 @@ export function StudentPaymentsView() {
   const defaultBankTransfer: PublicPaymentMethod = {
     title: 'Transferencia Bancaria',
     bankName: 'Banco Galicia / Santander',
-    alias: 'ENERGYAPP.OFICIAL',
+    alias: 'ENERGY.CLUB',
     cbu: '0070123430000012345678',
     cvu: '',
-    accountHolder: 'EnergyAPP S.R.L.',
+    accountHolder: 'Energy Club',
     cuit: '30-71234567-9',
   };
 
@@ -115,11 +114,6 @@ export function StudentPaymentsView() {
                     )}
                   </div>
                 </div>
-
-                <span className="inline-flex items-center gap-1.5 text-[10px] font-bold px-2 py-0.5 rounded-md bg-success-surface text-success-main border border-success-main/30 uppercase">
-                  <ShieldCheck size={11} aria-hidden="true" />
-                  <span>Oficial</span>
-                </span>
               </div>
 
               {/* Data Items with Clipboard Buttons (CHGYM2-92) */}

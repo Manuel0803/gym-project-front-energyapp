@@ -28,10 +28,10 @@ export class AuthService {
   static async onboarding(
     payload: OnboardingPayload
   ): Promise<OnboardingResponse> {
-    return await httpClient.post<OnboardingResponse>(
-      `/auth/onboarding`,
-      payload
-    );
+    return await httpClient.post<OnboardingResponse>(`/auth/onboarding`, {
+      newEmail: payload.email,
+      newPassword: payload.password,
+    });
   }
 
   /**

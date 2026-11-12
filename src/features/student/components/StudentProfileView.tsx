@@ -71,17 +71,28 @@ function StudentProfileForm({ profile }: StudentProfileFormProps) {
     reader.readAsDataURL(file);
   };
 
+  const sanitizePhone = (val: string) => val.replace(/[\s\-().]/g, '').trim();
+
+  const STATE_LABELS: Record<string, string> = {
+    ACTIVE: 'Activo',
+    SUSPENDED: 'Suspendido',
+    INACTIVE: 'Inactivo',
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    const cleanedPhone = sanitizePhone(phoneNumber);
+    const cleanedEmergencyPhone = sanitizePhone(emergencyPhone);
+
     updateProfile({
-      phoneNumber: phoneNumber.trim() || undefined,
+      phoneNumber: cleanedPhone || undefined,
       profileImageUrl: profileImage,
       emergencyContact: emergencyName.trim()
         ? {
             name: emergencyName.trim(),
             relationship: emergencyRelationship.trim() || 'Familiar',
-            phoneNumber: emergencyPhone.trim(),
+            phoneNumber: cleanedEmergencyPhone,
           }
         : null,
     });
@@ -93,7 +104,7 @@ function StudentProfileForm({ profile }: StudentProfileFormProps) {
       <div>
         <h1 className="text-2xl font-bold text-text-main tracking-tight flex items-center gap-2">
           <User className="text-brand-main" size={22} aria-hidden="true" />
-          <span>Mi Perfil de Alumno</span>
+          <span>Mi Perfil de Socio</span>
         </h1>
         <p className="text-xs text-text-muted mt-0.5">
           Actualizá tu información de contacto y foto para el sistema de acceso.
@@ -192,7 +203,7 @@ function StudentProfileForm({ profile }: StudentProfileFormProps) {
             <div className="flex items-center gap-1.5 mt-0.5">
               <ShieldCheck size={14} className="text-success-main" aria-hidden="true" />
               <span className="font-bold text-success-main">
-                {profile.state || 'Activo'}
+                {STATE_LABELS[(profile.state || '').toUpperCase()] || profile.state || 'Activo'}
               </span>
             </div>
           </div>
