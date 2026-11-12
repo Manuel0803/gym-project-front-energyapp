@@ -104,7 +104,7 @@ export default function MemberDetailClient({ id }: MemberDetailClientProps) {
     <section>
       <Link href="/admin/alumnos" className="flex text-text-muted uppercase text-xs font-bold items-center gap-1 mb-4 hover:text-text-main transition-colors w-max">
         <ArrowLeft size={16} aria-hidden="true" />
-        <span>Volver a la lista de alumnos</span>
+        <span>Volver al padrón de socios</span>
       </Link>
 
       <header className="flex justify-between items-center border-b-2 border-border-primary pb-4 mb-6">

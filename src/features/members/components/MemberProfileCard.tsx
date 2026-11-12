@@ -84,24 +84,31 @@ export function MemberProfileCard({
           </dd>
         </div>
 
-        {member.emergencyContact && (
-          <div className="flex flex-col gap-3 p-3 bg-danger-main/5 border border-danger-main/20 rounded-md">
-            <div className="flex items-center gap-2">
-              <HeartPulse size={16} className="text-danger-main" aria-hidden="true" />
-              <dt className="text-xs font-bold text-danger-main uppercase tracking-wider">
-                Contacto de Emergencia
-              </dt>
-            </div>
+        <div className="flex flex-col gap-3 p-3 bg-danger-main/5 border border-danger-main/20 rounded-md">
+          <div className="flex items-center gap-2">
+            <HeartPulse size={16} className="text-danger-main" aria-hidden="true" />
+            <dt className="text-xs font-bold text-danger-main uppercase tracking-wider">
+              Contacto de Emergencia
+            </dt>
+          </div>
+          {member.emergencyContact ? (
             <dd className="flex flex-col gap-1">
               <span className="text-sm font-bold text-text-main">
-                {member.emergencyContact.name} <span className="font-normal text-text-muted">({member.emergencyContact.relationship})</span>
+                {member.emergencyContact.name}{' '}
+                <span className="font-normal text-text-muted">
+                  ({member.emergencyContact.relationship})
+                </span>
               </span>
               <span className="text-sm text-text-main font-medium">
                 {member.emergencyContact.phoneNumber}
               </span>
             </dd>
-          </div>
-        )}
+          ) : (
+            <dd className="text-xs text-text-muted">
+              Sin contacto registrado
+            </dd>
+          )}
+        </div>
 
         {member.observations && (
           <div className="flex flex-col gap-1">
