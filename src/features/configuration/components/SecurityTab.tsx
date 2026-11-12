@@ -150,24 +150,6 @@ export function SecurityTab() {
           </button>
         </div>
       </form>
-
-      <hr className="border-border-primary" />
-
-      <div>
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="text-sm font-bold text-text-main">
-              Autenticación de Dos Factores (2FA)
-            </h3>
-            <p className="text-xs text-text-muted mt-1">
-              Añade una capa extra de seguridad a tu cuenta.
-            </p>
-          </div>
-          <button className="px-6 py-2.5 bg-brand-main/10 text-brand-main hover:bg-brand-main/20 rounded-sm text-sm font-medium transition-colors">
-            Próximamente
-          </button>
-        </div>
-      </div>
     </div>
   );
 }
