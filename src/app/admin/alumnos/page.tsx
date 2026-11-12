@@ -28,7 +28,7 @@ export default function AlumnosDirectoryPage() {
         </div>
       </header>
 
-      <Suspense fallback={<TableSkeleton />}>
+      <Suspense fallback={<TableSkeleton showToolbar />}>
         <MembersDirectory />
       </Suspense>
     </main>

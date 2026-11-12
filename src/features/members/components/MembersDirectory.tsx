@@ -121,7 +121,7 @@ export function MembersDirectory() {
   const todayMidnight = getMidnightTime();
 
   if (isLoading && members.length === 0) {
-    return <TableSkeleton />;
+    return <TableSkeleton showToolbar />;
   }
 
   return (

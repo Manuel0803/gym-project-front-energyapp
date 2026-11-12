@@ -9,12 +9,15 @@ export function DashboardSkeleton({
 
   return (
     <div className="flex flex-col gap-6 animate-pulse">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="h-8 w-48 bg-surface border border-border-primary rounded"></div>
-          <div className="h-4 w-32 bg-surface border border-border-primary rounded mt-2"></div>
+          <div className="h-8 w-44 bg-surface border border-border-primary rounded"></div>
+          <div className="h-4 w-56 bg-surface border border-border-primary rounded mt-2"></div>
         </div>
-        <div className="h-6 w-24 bg-surface border border-border-primary rounded"></div>
+        <div className="flex items-center gap-3">
+          <div className="h-7 w-32 bg-surface border border-border-primary rounded-md"></div>
+          <div className="h-7 w-32 bg-brand-surface border border-brand-main/20 rounded"></div>
+        </div>
       </div>
 
       <div
@@ -65,28 +68,35 @@ export function DashboardSkeleton({
           ))}
         </div>
 
-        <div className="bg-surface border border-border-primary rounded-lg flex flex-col h-100">
-          <div className="flex items-center justify-between p-5 border-b border-border-primary">
-            <div className="h-5 w-32 bg-border-primary/50 rounded"></div>
-            <div className="h-5 w-8 bg-brand-surface rounded"></div>
-          </div>
-          <div className="flex-1 p-0 flex flex-col">
-            {[1, 2, 3, 4, 5].map((item) => (
-              <div
-                key={item}
-                className="flex items-center justify-between p-4 border-b border-border-primary/50"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 bg-border-primary/40 rounded-full"></div>
-                  <div className="flex flex-col gap-2">
-                    <div className="h-4 w-24 bg-border-primary/60 rounded"></div>
-                    <div className="h-3 w-16 bg-border-primary/30 rounded"></div>
-                  </div>
-                </div>
-                <div className="h-6 w-12 bg-border-primary/40 rounded-full"></div>
+        <div className="flex flex-col gap-6">
+          {[1, 2, 3].map((cardIdx) => (
+            <div
+              key={cardIdx}
+              className="bg-surface border border-border-primary rounded-lg flex flex-col"
+            >
+              <div className="flex items-center justify-between p-5 border-b border-border-primary">
+                <div className="h-4 w-40 bg-border-primary/50 rounded"></div>
+                <div className="h-5 w-10 bg-brand-surface rounded"></div>
               </div>
-            ))}
-          </div>
+              <div className="p-4 flex flex-col gap-3">
+                {[1, 2, 3].map((item) => (
+                  <div
+                    key={item}
+                    className="flex items-center justify-between py-2 border-b border-border-primary/40 last:border-b-0"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="h-8 w-8 bg-border-primary/40 rounded-full"></div>
+                      <div className="flex flex-col gap-1.5">
+                        <div className="h-3.5 w-24 bg-border-primary/60 rounded"></div>
+                        <div className="h-2.5 w-16 bg-border-primary/30 rounded"></div>
+                      </div>
+                    </div>
+                    <div className="h-5 w-14 bg-border-primary/40 rounded-full"></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
