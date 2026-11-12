@@ -6,13 +6,13 @@ import { Search, X } from 'lucide-react';
 
 const SEARCH_CONFIG: Record<string, { placeholder: string }> = {
   '/admin/alumnos': {
-    placeholder: 'Buscar alumnos...',
+    placeholder: 'Buscar socios...',
   },
   '/dashboard/miembros': {
-    placeholder: 'Buscar alumnos...',
+    placeholder: 'Buscar socios...',
   },
   '/dashboard/administradores': {
-    placeholder: 'Buscar administradores, rol o estado...',
+    placeholder: 'Buscar administradores...',
   },
 };
 
@@ -87,7 +87,7 @@ export function GlobalSearchInput() {
   }
 
   return (
-    <div className="relative flex items-center gap-2.5 bg-surface border border-border-primary rounded-lg px-3.5 py-2 w-full focus-within:border-brand-main focus-within:ring-1 focus-within:ring-brand-main/30 transition-all shadow-xs">
+    <div className="relative flex items-center gap-2.5 bg-surface border border-border-primary rounded-lg px-3.5 py-2 w-full max-w-sm focus-within:border-brand-main focus-within:ring-1 focus-within:ring-brand-main/30 transition-all shadow-xs">
       <Search size={16} className="text-text-muted shrink-0" />
       <input
         ref={inputRef}
