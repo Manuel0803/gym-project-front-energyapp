@@ -86,7 +86,19 @@ export function GymAIChat() {
     clearHistory();
   };
 
-  const examples = examplesData?.examples ?? [];
+  const DEFAULT_EXAMPLES = [
+    '¿Cuántos socios activos tengo?',
+    '¿Cuáles fueron los ingresos de este mes?',
+    '¿Qué socios tienen la cuota por vencer esta semana?',
+    '¿En qué medio de pago cobré más este mes?',
+    '¿Cuántas suscripciones expiraron esta semana?',
+    '¿Cuál es el plan más popular?',
+  ];
+
+  const rawExamples = examplesData?.examples ?? DEFAULT_EXAMPLES;
+  const examples = rawExamples.filter(
+    (ex) => !ex.toLowerCase().includes('producto') && !ex.toLowerCase().includes('venta')
+  );
 
   return (
     <>
@@ -141,7 +153,7 @@ export function GymAIChat() {
                   ¿Qué querés saber de tu gimnasio?
                 </p>
                 <p className="text-xs text-text-muted mt-1">
-                  Preguntá por miembros, planes, pagos o vencimientos.
+                  Preguntá por socios, planes, pagos o vencimientos.
                 </p>
               </div>
               {examples.length > 0 && (
