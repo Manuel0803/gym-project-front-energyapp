@@ -41,9 +41,10 @@ export function AdminTable() {
     );
   }
 
-  const admins = (data?.data || []).filter(
-    (admin) => admin.role === 'ADMIN' || admin.role === 'USER'
-  );
+  const admins = (data?.data || []).filter((admin) => {
+    const role = String(admin.role).toUpperCase();
+    return role === 'ADMIN' || role === 'USER';
+  });
   const meta = data?.meta;
   const totalPages = meta?.lastPage || 1;
 
